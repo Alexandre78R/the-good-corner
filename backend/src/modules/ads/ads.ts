@@ -27,8 +27,19 @@ let ads: Ad [] = [
     },
   ];
 
-  const addAd = (newAd: Ad) => {
-    ads.push(newAd);
-  };
+const addAd = (newAd: Ad) => {
+  ads.push(newAd);
+};
 
-export { ads, addAd }
+const updateAd = (id: number, updatedAd: Partial<Ad>) => {
+  const adToUpdateIndex = ads.findIndex((ad) => ad.id === id);
+
+  if (adToUpdateIndex === -1) {
+    return false;
+  }
+
+  ads[adToUpdateIndex] = { ...ads[adToUpdateIndex], ...updatedAd };
+  return true;
+};
+
+export { ads, addAd, updateAd }

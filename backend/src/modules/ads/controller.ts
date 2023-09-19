@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ads, addAd } from "./ads";
+import { ads, addAd, updateAd } from "./ads";
 import { Ad } from "./types";
 // Pour les Request base de donnée
 // import {} from "./model"
@@ -58,9 +58,29 @@ const deleteAd = async (req: Request, res: Response) => {
     }
 }
 
+const updateAdController = async (req: Request, res: Response) => {
+    const idOfAdToUpdate = parseInt(req.params.id, 10);
+    try {
+        const adToUpdate = ads.find((ad) => ad.id === idOfAdToUpdate);
+        if (!adToUpdate) return res.sendStatus(404);
+
+        const updateSuccessful = updateAd(idOfAdToUpdate, req.body);
+
+        if (updateSuccessful) {
+            res.send(ads.find((ad) => ad.id === idOfAdToUpdate));
+        } else {
+            res.status(500).json({ error: "Failed to update ad" });
+        }
+    } catch (err: any) {
+        console.log('err', err);
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export {
     getAllAds,
     getByIdAds,
     postAd,
     deleteAd,
+    updateAdController,
 }
