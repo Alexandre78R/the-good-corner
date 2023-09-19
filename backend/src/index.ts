@@ -32,14 +32,24 @@ let ads: Ad [] = [
     },
   ];
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello World!");
+});
+  
+app.get("/ads", (req: Request, res: Response) => {
+    res.send(ads);
 });
 
-app.get("/ad", (req, res) => {
-  res.send(ads);
-});
+app.get("/ad/:id", (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const ad = ads.find((ad) => ad.id === id);
+    if (!ad) {
+      res.sendStatus(404);
+    }
+    res.json({ ad });
+ });
 
+  
 app.post("/ads", (req: Request, res: Response) => {
     console.log("req.body", req.body)
     const id = ads.length + 1;
@@ -51,7 +61,7 @@ app.post("/ads", (req: Request, res: Response) => {
     ads = [...ads, newAd];
   
     res.send(newAd);
-  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
