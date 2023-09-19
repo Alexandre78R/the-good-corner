@@ -40,4 +40,4 @@ const validateAddAds = (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export{ validateAddAds }
+export { validateAddAds }
