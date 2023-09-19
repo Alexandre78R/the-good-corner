@@ -50,7 +50,7 @@ app.get("/ad/:id", (req: Request, res: Response) => {
  });
 
   
-app.post("/ads", (req: Request, res: Response) => {
+app.post("/ad", (req: Request, res: Response) => {
     console.log("req.body", req.body)
     const id = ads.length + 1;
     const newAd: Ad = {
