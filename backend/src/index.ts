@@ -32,12 +32,12 @@ let ads: Ad [] = [
     },
   ];
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello World!");
 });
-
-app.get("/ad", (req, res) => {
-  res.send(ads);
+  
+app.get("/ads", (req: Request, res: Response) => {
+    res.send(ads);
 });
 
 app.post("/ads", (req: Request, res: Response) => {
@@ -51,7 +51,7 @@ app.post("/ads", (req: Request, res: Response) => {
     ads = [...ads, newAd];
   
     res.send(newAd);
-  });
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
