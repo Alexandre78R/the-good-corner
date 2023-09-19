@@ -1,12 +1,17 @@
 import express, { Request, Response } from "express";
-import { Ad } from "./types";
 import { app } from "./config/server";
 
 const port = process.env.PORT || 3000;
 
+app.get("/", (req: Request, res: Response) => {
+    res.send("Hello World!");
+});
+
 app.listen(port, () => {
     console.log("Serveur open PORT :", port)
 });
+
+export { app }
 
 // const app = express();
 // app.use(express.json());
@@ -38,34 +43,30 @@ app.listen(port, () => {
 //       createdAt: "2023-10-05T10:14:15.922Z",
 //     },
 //   ];
-
-// app.get("/", (req: Request, res: Response) => {
-//     res.send("Hello World!");
-// });
   
 // app.get("/ads", (req: Request, res: Response) => {
 //     res.send(ads);
 // });
 
 // app.get("/ad/:id", (req: Request, res: Response) => {
-//     const id = parseInt(req.params.id);
-//     const ad = ads.find((ad) => ad.id === id);
-//     if (!ad) {
-//       res.sendStatus(404);
-//     }
-//     res.json({ ad });
+    // const id = parseInt(req.params.id);
+    // const ad = ads.find((ad) => ad.id === id);
+    // if (!ad) {
+    //   res.sendStatus(404);
+    // }
+    // res.json({ ad });
 //  });
 
   
 // app.post("/ad", (req: Request, res: Response) => {
-//     console.log("req.body", req.body)
-//     const id = ads.length + 1;
-//     const newAd: Ad = {
-//       ...req.body,
-//       id,
-//       createdAt: new Date().toISOString(),
-//     };
-//     ads = [...ads, newAd];
+    // console.log("req.body", req.body)
+    // const id = ads.length + 1;
+    // const newAd: Ad = {
+    //   ...req.body,
+    //   id,
+    //   createdAt: new Date().toISOString(),
+    // };
+    // ads = [...ads, newAd];
   
-//     res.send(newAd);
+    // res.send(newAd);
 // });

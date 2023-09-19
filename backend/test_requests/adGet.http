@@ -1,1 +1,1 @@
-GET http://localhost:3000/ad/2
+GET http://localhost:3000/api/abs/1
