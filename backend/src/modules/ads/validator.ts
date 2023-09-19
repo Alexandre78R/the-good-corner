@@ -6,7 +6,7 @@ interface ValidationError {
 }
 
 const validateAddAds = (req: Request, res: Response, next: NextFunction) => {
-    const { title , description, owner, price, picture, location} = req.body
+    const { title , description, owner, price, picture, location} = req.body;
     const validationErrors: ValidationError[] = []; 
 
     if (title == null || title === "") {
