@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
-import { router as absRouter } from './ads';
+import { router as adsRouter } from './ads';
 
-router.use("/abs", absRouter);
+router.use("/ads", adsRouter);
 
 export { router };

@@ -26,7 +26,7 @@ const validateAddAds = (req: Request, res: Response, next: NextFunction) => {
     }
 
     if (picture == null || picture === "") {
-        validationErrors.push({ field: "tipicturetle", message: "The picture field is required" });
+        validationErrors.push({ field: "picture", message: "The picture field is required" });
     }
 
     if (location == null || location === "") {
