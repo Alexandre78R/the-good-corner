@@ -10,6 +10,6 @@ import { validateAddAds } from "./validator";
 
 router.get('/', getAllAds);
 router.get('/:id', getByIdAds);
-router.post('/', postAd);
+router.post('/', validateAddAds, postAd);
 
 export { router };
