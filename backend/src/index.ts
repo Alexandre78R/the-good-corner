@@ -40,6 +40,16 @@ app.get("/ads", (req: Request, res: Response) => {
     res.send(ads);
 });
 
+app.get("/ad/:id", (req: Request, res: Response) => {
+    const id = parseInt(req.params.id);
+    const ad = ads.find((ad) => ad.id === id);
+    if (!ad) {
+      res.sendStatus(404);
+    }
+    res.json({ ad });
+ });
+
+  
 app.post("/ads", (req: Request, res: Response) => {
     console.log("req.body", req.body)
     const id = ads.length + 1;
