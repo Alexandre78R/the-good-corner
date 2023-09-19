@@ -43,8 +43,24 @@ const postAd = async (req: Request, res: Response) => {
     }
 }
 
+const deleteAd = async (req: Request, res: Response) => {
+    const idOfAdToDelete = parseInt(req.params.id, 10)
+    try {
+        const adIndex = ads.findIndex((ad) => ad.id === idOfAdToDelete);
+        if (adIndex === -1) return res.sendStatus(404);
+
+        ads.splice(adIndex, 1);
+
+        res.status(204).json({ message: "ad deleted !" });
+    } catch (err: any) {
+        console.log('err', err);
+        res.status(500).json({ error: err.message });
+    }
+}
+
 export {
     getAllAds,
     getByIdAds,
     postAd,
+    deleteAd,
 }
