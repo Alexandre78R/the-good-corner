@@ -2,12 +2,14 @@ import { Request, Response } from "express";
 import { ads, addAd, updateAd } from "./ads";
 import { Ad } from "./types";
 import {
-    findAllAds, 
+    findAllAds,
+    createAd,
 } from "./model"
 
 const getAllAds = async (req: Request, res: Response) => {
     try {
         const dataAllAds = await findAllAds(); 
+        console.log("dataAllAds", dataAllAds)
         res.send(dataAllAds);
     } catch (err: any) {
         console.log('err', err);
@@ -37,8 +39,10 @@ const postAd = async (req: Request, res: Response) => {
             id,
             createdAt: new Date().toISOString(),
           };
-        addAd(newAd);
-        res.send(newAd);
+        // addAd(newAd);
+        const dataNewAd = await createAd(newAd)
+        console.log("dataNewAd", dataNewAd)
+        res.send(dataNewAd);
     } catch (err: any) {
         console.log('err', err);
         res.status(500).json({error : err.message});
