@@ -41,29 +41,32 @@ const findAllAds = (): Promise<Ad[]> => {
 
 const createAd = async (ad: Ad) => {
     console.log("ad", ad)
-    try {
-        db.run(
-            'INSERT INTO ad (title, owner, description, price, picture, location, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)',
-            [
-              ad.title,
-              ad.owner,
-              ad.description,
-              ad.price,
-              ad.picture,
-              ad.location,
-              ad.createdAt,
-            ],
-            function (err: any) {
-              if (err) {
-                console.error('Erreur lors de l\'insertion de l\'annonce :', err);
-                throw err;
+    return new Promise<Ad[]>(async (resolve, reject) => {
+      try {
+          db.run(
+              'INSERT INTO ad (title, owner, description, price, picture, location, createdAt, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+              [
+                ad.title,
+                ad.owner,
+                ad.description,
+                ad.price,
+                ad.picture,
+                ad.location,
+                ad.createdAt,
+                ad.category_id,
+              ],
+              function (err: any) {
+                if (err) {
+                  console.error('Erreur lors de l\'insertion de l\'annonce :', err);
+                  reject(err);
+                }
+                console.log('Nouvelle annonce insérée avec succès. ID:');
               }
-              console.log('Nouvelle annonce insérée avec succès. ID:');
-            }
-        );
-    } catch (err) {
-        console.error("err", err);
-    }
+          );
+      } catch (err) {
+          console.error("err", err);
+      }
+    })
 }
 
 const deleteBDDAd = async (id: number) => {

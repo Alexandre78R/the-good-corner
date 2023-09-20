@@ -25,7 +25,7 @@ const getByIdAds = async (req: Request, res: Response) => {
         // if (!ad) {
         //     res.sendStatus(404);
         // }
-        const dataByIDAd = await findByIDAds(id);
+        const dataByIDAd: Ad[] = await findByIDAds(id);
         res.json({ dataByIDAd });
     } catch (err: any) {
         console.log('err', err);
@@ -40,7 +40,7 @@ const postAd = async (req: Request, res: Response) => {
             ...req.body,
             id,
             createdAt: new Date().toISOString(),
-          };
+        };
         // addAd(newAd);
         const dataNewAd = await createAd(newAd)
         res.send(dataNewAd);
