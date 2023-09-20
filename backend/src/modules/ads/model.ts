@@ -1,16 +1,35 @@
 import { db } from "../../config/database";
 import { Ad } from "./types";
 
-const findAllAds = () => {
-    return new Promise(async (resolve, reject) => {
+const findAllAds = (): Promise<Ad[]> => {
+  return new Promise<Ad[]>((resolve, reject) => {
+    try {
+      db.all("SELECT * FROM ad", (err, rows) => {
+        if (err) {
+          console.error("Erreur lors de la récupération des annonces :", err);
+          reject(err);
+        } else {
+          const ads: Ad[] = rows as Ad[];
+          resolve(ads);
+        }
+      });
+    } catch (err) {
+      console.error("err", err);
+      reject(err);
+    }
+  });
+};
+
+  const findByIDAds = (id: Number) => {
+    return new Promise<Ad[]>(async (resolve, reject) => {
       try {
-        db.all("SELECT * FROM ad", (err, rows) => {
+        db.all("SELECT * FROM ad WHERE id =  ?", [id],  (err, rows) => {
           if (err) {
             console.error("Erreur lors de la récupération des annonces :", err);
             reject(err);
           } else {
-            console.log("Annonces récupérées avec succès.");
-            resolve(rows);
+            const ad: Ad[] = rows as Ad[];
+            resolve(ad);
           }
         });
       } catch (err) {
@@ -47,6 +66,20 @@ const createAd = async (ad: Ad) => {
     }
 }
 
+const deleteBDDAd = async (id: number) => {
+  return new Promise<boolean>((resolve, reject) => {
+    db.run("DELETE FROM ad WHERE id = ?", [id], (err: any) => {
+      if (err) {
+        console.error('Erreur lors de la suppression de l\'annonce :', err);
+        reject(err);
+      } else {
+        console.log('Annonce supprimée avec succès. ID:', id);
+        resolve(true); // Renvoie true pour indiquer que la suppression a réussi
+      }
+    });
+  });
+};
+
 // server.put("/ads/:id", (request, response) => {
 //     const _id = parseInt(request.params.id);
 //     const updatedAd = request.body;
@@ -75,4 +108,4 @@ const createAd = async (ad: Ad) => {
 //     });
 //   });
 
-export { findAllAds , createAd }; 
+export { findAllAds , createAd, findByIDAds, deleteBDDAd }; 
