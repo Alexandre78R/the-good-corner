@@ -1,12 +1,14 @@
 import { Request, Response } from "express";
 import { ads, addAd, updateAd } from "./ads";
 import { Ad } from "./types";
-// Pour les Request base de donnée
-// import {} from "./model"
+import {
+    findAllAds, 
+} from "./model"
 
 const getAllAds = async (req: Request, res: Response) => {
     try {
-        res.send(ads);
+        const dataAllAds = await findAllAds(); 
+        res.send(dataAllAds);
     } catch (err: any) {
         console.log('err', err);
         res.status(500).json({error : err.message});
