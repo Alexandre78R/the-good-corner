@@ -12,6 +12,7 @@ let ads: Ad [] = [
         "https://images.lecho.be/view?iid=dc:113129565&context=ONLINE&ratio=16/9&width=640&u=1508242455000",
       location: "Paris",
       createdAt: "2023-09-05T10:13:14.755Z",
+      "category_id" : 1
     },
     {
       id: 2,
@@ -24,6 +25,7 @@ let ads: Ad [] = [
         "https://www.automobile-magazine.fr/asset/cms/34973/config/28294/apres-plusieurs-prototypes-la-bollore-bluecar-a-fini-par-devoiler-sa-version-definitive.jpg",
       location: "Paris",
       createdAt: "2023-10-05T10:14:15.922Z",
+      "category_id" : 2
     },
   ];
 

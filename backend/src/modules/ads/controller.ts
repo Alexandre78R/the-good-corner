@@ -2,12 +2,15 @@ import { Request, Response } from "express";
 import { ads, addAd, updateAd } from "./ads";
 import { Ad } from "./types";
 import {
-    findAllAds, 
+    findAllAds,
+    createAd,
+    findByIDAds,
+    deleteBDDAd,
 } from "./model"
 
 const getAllAds = async (req: Request, res: Response) => {
     try {
-        const dataAllAds = await findAllAds(); 
+        const dataAllAds: Ad[] = await findAllAds(); 
         res.send(dataAllAds);
     } catch (err: any) {
         console.log('err', err);
@@ -17,12 +20,13 @@ const getAllAds = async (req: Request, res: Response) => {
 
 const getByIdAds = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const ad = ads.find((ad) => ad.id === id);
+    // const ad = ads.find((ad) => ad.id === id);
     try {
-        if (!ad) {
-            res.sendStatus(404);
-        }
-        res.json({ ad });
+        // if (!ad) {
+        //     res.sendStatus(404);
+        // }
+        const dataByIDAd: Ad[] = await findByIDAds(id);
+        res.json({ dataByIDAd });
     } catch (err: any) {
         console.log('err', err);
         res.status(500).json({error : err.message});
@@ -36,9 +40,10 @@ const postAd = async (req: Request, res: Response) => {
             ...req.body,
             id,
             createdAt: new Date().toISOString(),
-          };
-        addAd(newAd);
-        res.send(newAd);
+        };
+        // addAd(newAd);
+        const dataNewAd = await createAd(newAd)
+        res.send(dataNewAd);
     } catch (err: any) {
         console.log('err', err);
         res.status(500).json({error : err.message});
@@ -48,12 +53,20 @@ const postAd = async (req: Request, res: Response) => {
 const deleteAd = async (req: Request, res: Response) => {
     const idOfAdToDelete = parseInt(req.params.id, 10)
     try {
-        const adIndex = ads.findIndex((ad) => ad.id === idOfAdToDelete);
-        if (adIndex === -1) return res.sendStatus(404);
+        // const adIndex = ads.findIndex((ad) => ad.id === idOfAdToDelete);
+        // if (adIndex === -1) return res.sendStatus(404);
 
-        ads.splice(adIndex, 1);
+        // ads.splice(adIndex, 1);
+        const dataByIDAd: Ad[] = await findByIDAds(idOfAdToDelete);
+        if (dataByIDAd.length === 0) return res.status(404).json({ message: "Not Found AD"});
 
-        res.status(204).json({ message: "ad deleted !" });
+        const deleteSuccess: boolean = await deleteBDDAd(idOfAdToDelete);
+
+        if (deleteSuccess) {
+          res.status(204).json({ message: "ad deleted successfully!" });
+        } else {
+          res.status(500).json({ message: "Failed to delete ad" });
+        }
     } catch (err: any) {
         console.log('err', err);
         res.status(500).json({ error: err.message });
