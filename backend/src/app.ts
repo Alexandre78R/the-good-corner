@@ -7,6 +7,10 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
 });
 
+app.get("*", (req: Request, res: Response) => {
+    res.redirect('/')
+});
+
 app.listen(port, () => {
     console.log("Serveur open PORT :", port)
 });
