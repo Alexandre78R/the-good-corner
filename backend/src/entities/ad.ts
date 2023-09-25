@@ -1,5 +1,6 @@
 import {
   Entity,
+  BaseEntity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   Column,
@@ -12,44 +13,42 @@ import { Category } from "./category";
 import { Tag } from "./tag";
 
 @Entity()
-export function AdEntities() {
-  const id = PrimaryGeneratedColumn();
+export class Ad extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  const title = Column({ length: 50 });
-  Length(5, 50, { message: "Le titre doit contenir entre 5 et 50 caractères" })(this, "title");
+  @Column({ length: 50 })
+  @Length(5, 50, { message: "Le titre doit contenir entre 5 et 50 caractères" })
+  title: string;
 
-  const description = Column({ nullable: true, type: "text" });
+  @Column({ nullable: true, type: "text" })
+  description: string;
 
-  const owner = Column();
+  @Column()
+  owner: string;
 
-  const price = Column({ type: "float" });
-  Min(0, { message: "le prix doit être positif" })(this, "price");
+  @Column({ type: "float" })
+  @Min(0, { message: "le prix doit etre positif" })
+  price: number;
 
-  const location = Column();
+  @Column()
+  location: string;
 
-  const picture = Column();
+  @Column()
+  picture: string;
 
-  const createdAt = CreateDateColumn();
+  @CreateDateColumn()
+  createdAt: string;
 
-  const category = ManyToOne(() => Category, (c) => c.ads, {
+  @ManyToOne(() => Category, (c) => c.ads, {
     cascade: true,
     onDelete: "CASCADE",
-  });
+  })
+  category: Category;
 
-  const tags = ManyToMany(() => Tag, (t) => t.ads, {
+  @JoinTable()
+  @ManyToMany(() => Tag, (t) => t.ads, {
     cascade: true,
-  });
-
-  return {
-    id,
-    title,
-    description,
-    owner,
-    price,
-    location,
-    picture,
-    createdAt,
-    category,
-    tags,
-  };
+  })
+  tags: Tag[];
 }
