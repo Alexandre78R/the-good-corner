@@ -28,6 +28,7 @@ let ads: Ad [] = [
       "category_id" : 2
     },
   ];
+  
 
 const addAd = (newAd: Ad) => {
   ads.push(newAd);

@@ -20,7 +20,7 @@ const findAllAds = (): Promise<Ad[]> => {
   });
 };
 
-  const findByIDAds = (id: Number) => {
+  const findByIDAds = (id: number) => {
     return new Promise<Ad[]>(async (resolve, reject) => {
       try {
         db.all("SELECT * FROM ad WHERE id =  ?", [id],  (err, rows) => {
@@ -61,6 +61,7 @@ const createAd = async (ad: Ad) => {
                   reject(err);
                 }
                 console.log('Nouvelle annonce insérée avec succès. ID:');
+                resolve([ad])
               }
           );
       } catch (err) {
@@ -77,20 +78,33 @@ const deleteBDDAd = async (id: number) => {
         reject(err);
       } else {
         console.log('Annonce supprimée avec succès. ID:', id);
-        resolve(true); // Renvoie true pour indiquer que la suppression a réussi
+        resolve(true);
       }
     });
   });
 };
+
+const updateBDDAd = async (sqlUpdate: any, params: any) => {
+  return new Promise<boolean>((resolve, reject) => {
+    db.run(sqlUpdate, params, (err: any) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(true);
+      }
+    });
+  });
+};
+
 
 // server.put("/ads/:id", (request, response) => {
 //     const _id = parseInt(request.params.id);
 //     const updatedAd = request.body;
   
 //     // Vérifier si l'objet updatedAd est vide
-//     if (Object.keys(updatedAd).length === 0) {
-//       return response.sendStatus(204); // Aucune mise à jour nécessaire
-//     }
+    // if (Object.keys(updatedAd).length === 0) {
+    //   return response.sendStatus(204); // Aucune mise à jour nécessaire
+    // }
   
 //     const params = [];
 //     const columnsToUpdate = Object.entries(updatedAd).map(([key, value]) => {
@@ -111,4 +125,4 @@ const deleteBDDAd = async (id: number) => {
 //     });
 //   });
 
-export { findAllAds , createAd, findByIDAds, deleteBDDAd }; 
+export { findAllAds , createAd, findByIDAds, deleteBDDAd, updateBDDAd }; 

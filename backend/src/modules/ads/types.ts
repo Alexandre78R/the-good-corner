@@ -1,4 +1,6 @@
-export type Ad = {
+import { Request } from "express";
+
+type Ad = {
     id: number;
     title: string;
     description: string;
@@ -9,3 +11,10 @@ export type Ad = {
     location: string;
     category_id: number;
 }
+
+interface CustomRequestUpdate extends Request {
+    sqlUpdate?: string;
+    sqlParams?: any[];
+}
+
+export { Ad, CustomRequestUpdate}

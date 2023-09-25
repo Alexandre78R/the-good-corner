@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { ads, addAd, updateAd } from "./ads";
-import { Ad } from "./types";
+import { Ad, CustomRequestUpdate } from "./types";
 import {
     findAllAds,
     createAd,
     findByIDAds,
     deleteBDDAd,
+    updateBDDAd, 
 } from "./model"
 
 const getAllAds = async (req: Request, res: Response) => {
@@ -19,7 +20,7 @@ const getAllAds = async (req: Request, res: Response) => {
 }
 
 const getByIdAds = async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id);
+    const id: number = parseInt(req.params.id);
     // const ad = ads.find((ad) => ad.id === id);
     try {
         // if (!ad) {
@@ -34,7 +35,7 @@ const getByIdAds = async (req: Request, res: Response) => {
 }
 
 const postAd = async (req: Request, res: Response) => {
-    const id = ads.length + 1;
+    const id: number = ads.length + 1;
     try {
         const newAd: Ad = {
             ...req.body,
@@ -51,7 +52,7 @@ const postAd = async (req: Request, res: Response) => {
 }
 
 const deleteAd = async (req: Request, res: Response) => {
-    const idOfAdToDelete = parseInt(req.params.id, 10)
+    const idOfAdToDelete: number = parseInt(req.params.id, 10)
     try {
         // const adIndex = ads.findIndex((ad) => ad.id === idOfAdToDelete);
         // if (adIndex === -1) return res.sendStatus(404);
@@ -73,19 +74,29 @@ const deleteAd = async (req: Request, res: Response) => {
     }
 }
 
-const updateAdController = async (req: Request, res: Response) => {
-    const idOfAdToUpdate = parseInt(req.params.id, 10);
+const updateAdController = async (req: CustomRequestUpdate, res: Response) => {
+    const idOfAdToUpdate: number = parseInt(req.params.id, 10);
+    const sqlUpdate = req.sqlUpdate;
+    const sqlParams = req.sqlParams;
+
     try {
-        const adToUpdate = ads.find((ad) => ad.id === idOfAdToUpdate);
-        if (!adToUpdate) return res.sendStatus(404);
+        // const adToUpdate = ads.find((ad) => ad.id === idOfAdToUpdate);
+        // if (!adToUpdate) return res.sendStatus(404);
 
-        const updateSuccessful = updateAd(idOfAdToUpdate, req.body);
+        // const updateSuccessful = updateAd(idOfAdToUpdate, req.body);
 
-        if (updateSuccessful) {
-            res.send(ads.find((ad) => ad.id === idOfAdToUpdate));
-        } else {
-            res.status(500).json({ error: "Failed to update ad" });
-        }
+        // if (updateSuccessful) {
+        //     res.send(ads.find((ad) => ad.id === idOfAdToUpdate));
+        // } else {
+        //     res.status(500).json({ error: "Failed to update ad" });
+        // }
+        if (!sqlUpdate) return res.status(500).json({ err : "internne SQLUPDATE !"});
+        if (!sqlParams) return res.status(500).json({ err : "internne sqlParams !"});
+        
+        const modifyAd = await updateBDDAd(sqlUpdate, sqlParams);
+        if (!modifyAd) return res.status(500).json({ message: "Failed to update ad" });
+        
+        res.status(201).json({ message : "Update OK"})
     } catch (err: any) {
         console.log('err', err);
         res.status(500).json({ error: err.message });
