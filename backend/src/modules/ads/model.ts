@@ -84,7 +84,7 @@ const deleteBDDAd = async (id: number) => {
   });
 };
 
-const updateBDDAd = async (sqlUpdate: any, params: any) => {
+const updateBDDAd = async (sqlUpdate: string, params: string[]) => {
   return new Promise<boolean>((resolve, reject) => {
     db.run(sqlUpdate, params, (err: any) => {
       if (err) {
