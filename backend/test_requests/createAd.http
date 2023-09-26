@@ -1,4 +1,4 @@
-POST http://localhost:8000/ads
+POST http://localhost:3000/ads
 Content-Type: application/json
 
 {
