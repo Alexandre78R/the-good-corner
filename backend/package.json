@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node-dev ./src/app.ts",
-    "resetDB": "ts-node-dev ./src/config/resetDb.ts"
+    "resetDB": "ts-node-dev ./src/config/resetDb.ts",
+    "start": "ts-node-dev ./src/app.ts"
   },
   "author": "",
   "license": "ISC",
