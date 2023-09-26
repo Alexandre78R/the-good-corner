@@ -17,4 +17,7 @@ interface CustomRequestUpdate extends Request {
     sqlParams?: any[];
 }
 
-export { Ad, CustomRequestUpdate }
+export { 
+    // Ad,
+    CustomRequestUpdate 
+}

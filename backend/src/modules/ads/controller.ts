@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
-import { ads, addAd, updateAd } from "./ads";
+// import { ads, addAd, updateAd } from "./ads";
 // import { Ad, CustomRequestUpdate } from "./types";
-import { Ad } from "../../entities/ad";
-
+import { Ad } from "../../entities/ad.entity";
+import { In } from "typeorm";
+import { validate } from "class-validator";
 import {
     findAllAds,
     // createAd,
@@ -12,12 +13,34 @@ import {
 } from "./model"
 
 const getAllAds = async (req: Request, res: Response) => {
+    // try {
+    //     const dataAllAds: Ad[] = await findAllAds(); 
+    //     res.send(dataAllAds);
+    // } catch (err: any) {
+    //     console.log('err', err);
+    //     res.status(500).json({error : err.message});
+    // }
+    const { tagIds } = req.query;
+    console.log("tagIds", tagIds)
     try {
-        const dataAllAds: Ad[] = await findAllAds(); 
-        res.send(dataAllAds);
-    } catch (err: any) {
-        console.log('err', err);
-        res.status(500).json({error : err.message});
+      const ads = await Ad.find({
+        relations: {
+          category: true,
+          tags: true,
+        },
+        where: {
+          tags: {
+            id:
+              typeof tagIds === "string" && tagIds.length > 0
+                ? In(tagIds.split(",").map((t) => parseInt(t, 10)))
+                : undefined,
+          },
+        },
+      });
+      res.send(ads);
+    } catch (err) {
+      console.log(err);
+      res.sendStatus(500);
     }
 }
 

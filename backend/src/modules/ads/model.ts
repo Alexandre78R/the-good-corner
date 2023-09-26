@@ -1,10 +1,10 @@
 // import { db } from "../../config/database";
-import db  from "../../config/database";
+// import db  from "../../config/database";
 // import { Ad } from "./types";
-import { Ad } from "../../entities/ad";
+import { Ad } from "../../entities/ad.entity";
 
-const findAllAds = (): Promise<Ad[]> => {
-  return new Promise<Ad[]> ( async (resolve, reject) => {
+const findAllAds = async (): Promise<any> => {
+  // return new Promise<Ad[]> ( async (resolve, reject) => {
     try {
       // db.all("SELECT * FROM ad", (err, rows) => {
       //   if (err) {
@@ -16,12 +16,12 @@ const findAllAds = (): Promise<Ad[]> => {
       //   }
       // });
       const adsList: Ad[] = await Ad.find()
-      resolve(adsList)
+      return adsList
     } catch (err) {
       console.error("err", err);
-      reject(err);
+      console.error(err);
     }
-  });
+  // });
 };
 
 //   const findByIDAds = (id: number) => {
@@ -100,5 +100,10 @@ const findAllAds = (): Promise<Ad[]> => {
 //   });
 // };
 
-// export { findAllAds , createAd, findByIDAds, deleteBDDAd, updateBDDAd }; 
-export { findAllAds }; 
+export { 
+  findAllAds,
+  // createAd,
+  // findByIDAds,
+  // deleteBDDAd,
+  // updateBDDAd
+}; 
