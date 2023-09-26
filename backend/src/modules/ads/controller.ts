@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ads, addAd, updateAd } from "./ads";
-import { Ad, CustomRequestUpdate } from "./types";
+// import { Ad, CustomRequestUpdate } from "./types";
+import { Ad } from "../../entities/ad";
+
 import {
     findAllAds,
     // createAd,

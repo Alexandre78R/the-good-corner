@@ -1,7 +1,7 @@
 // import { db } from "../../config/database";
 import db  from "../../config/database";
-import { Ad } from "./types";
-import { AdEntities } from "../../entities/ad";
+// import { Ad } from "./types";
+import { Ad } from "../../entities/ad";
 
 const findAllAds = (): Promise<Ad[]> => {
   return new Promise<Ad[]> ( async (resolve, reject) => {
@@ -15,7 +15,7 @@ const findAllAds = (): Promise<Ad[]> => {
       //     resolve(ads);
       //   }
       // });
-      const adsList: Ad[] = await AdEntities.find()
+      const adsList: Ad[] = await Ad.find()
       resolve(adsList)
     } catch (err) {
       console.error("err", err);
