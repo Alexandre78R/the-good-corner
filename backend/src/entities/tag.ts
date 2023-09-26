@@ -5,11 +5,11 @@ import {
   BaseEntity,
   ManyToMany,
 } from "typeorm";
-import { Ad } from "./ad.entity";
+import { Ad } from "./ad";
 import { Length } from "class-validator";
 
 @Entity()
-export class Tag {
+export class Tag extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 

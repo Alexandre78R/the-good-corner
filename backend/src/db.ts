@@ -1,9 +1,3 @@
-// import sqlite from "sqlite3";
-
-// const db = new sqlite.Database('good_corner.sqlite');
-
-// export { db };
-
 import { DataSource } from "typeorm";
 
 export default new DataSource({
@@ -11,6 +5,5 @@ export default new DataSource({
   database: "the_good_corner.sqlite",
   entities: ["src/entities/*.ts"],
   synchronize: true,
-  // logging: ["query","error"],
   logging: true,
 });
