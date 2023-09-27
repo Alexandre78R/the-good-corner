@@ -9,6 +9,7 @@ const findAllCategories = async (tagIds : any) => {
       resolve(categories)
     } catch (err) {
       console.error("err", err);
+      reject(err)
     }
   });
 };
@@ -21,6 +22,7 @@ const createCategories = async (categorie: ICreateCategory) => {
       resolve(newCategory);
     } catch (err) {
       console.error("err", err);
+      reject(err)
     }
   })
 }

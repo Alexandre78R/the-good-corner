@@ -8,6 +8,7 @@ import {
 
 const getAllTags = async (req: Request, res: Response) => {
   const { queryName } = req.query;
+  console.log("queryName", queryName)
   try {
       const dataAllAds: IListTag[] = await findAllTags(queryName); 
       res.send(dataAllAds);

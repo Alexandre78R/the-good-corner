@@ -9,6 +9,7 @@ const findAllTags = async (queryName : any) => {
       resolve(tags);
     } catch (err) {
       console.error("err", err);
+      reject(err)
     }
   });
 };
@@ -22,6 +23,7 @@ const createTags = async (tag: ICreateTag) => {
       resolve(newTag);
     } catch (err) {
       console.error("err", err);
+      reject(err)
     }
   })
 }

@@ -22,6 +22,7 @@ const findAllAds = async (tagIds : any) => {
       resolve(ads)
     } catch (err) {
       console.error("err", err);
+      reject(err)
     }
   });
 };
@@ -36,6 +37,7 @@ const createAd = async (ad: Ad) => {
       resolve(newAdWithId);
     } catch (err) {
       console.error("err", err);
+      reject(err)
     }
   })
 }
@@ -49,6 +51,7 @@ const deleteBDDAd = async (id: number) => {
       resolve(true)
     } catch (err) {
       console.log(err);
+      reject(err)
     }
   });
 };
@@ -67,6 +70,7 @@ const updateBDDAd = async (sqlUpdate: string, params: string[], body: Ad) => {
       resolve(await adToUpdate.save())
     } catch (err) {
       console.log(err);
+      reject(err)
     }
   });
 };
