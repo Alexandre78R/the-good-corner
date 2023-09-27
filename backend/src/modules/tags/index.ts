@@ -1,17 +1,15 @@
 import { Router } from "express";
 const router = Router();
-// import {
-//     getAllAds,
-//     postAd,
-//     deleteAd,
-//     updateAdController
-// } from './controller'
-// import { validateAddAds } from "./validator";
-// import { createRequestSqlUpdate } from "../../midleware/createRequestSqlUpdate";
+import {
+    getAllTags,
+    postTags,
+    deleteTags,
+} from './controller'
 
-// router.get('/', getAllAds);
-// router.post('/', validateAddAds, postAd);
-// router.delete('/:id', deleteAd);
-// router.patch('/:id', createRequestSqlUpdate, updateAdController );
+// import { validateAddTags } from "./validator";
+
+router.get('/', getAllTags);
+router.post('/', postTags);
+router.delete('/:id', deleteTags);
 
 export { router };
