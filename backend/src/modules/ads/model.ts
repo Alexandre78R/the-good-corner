@@ -1,4 +1,4 @@
-import { Ad } from "../../entities/ad.entity";
+import { Ad } from "./entity";
 import { In } from "typeorm";
 import { validate } from "class-validator";
 

@@ -1,4 +1,4 @@
-import TagService from "../../services/tags.service";
+import TagService from "./service";
 import { ICreateTag, IListTag } from "./types";
 
 const findAllTags = async (queryName : any) => {

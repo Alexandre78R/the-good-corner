@@ -1,6 +1,6 @@
 import { Repository } from "typeorm";
-import { Ad } from "../entities/ad.entity";
-import datasource from "../config/database";
+import { Ad } from "./entity";
+import datasource from "../../config/database";
 
 export default class AdsService {
   db: Repository<Ad>;

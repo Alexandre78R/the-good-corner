@@ -1,5 +1,5 @@
-import { Category } from "../../entities/category.entity";
-import CategoryService from "../../services/category.service";
+import { Category } from "./entity";
+import CategoryService from "./service";
 import { ICreateCategory } from "./types";
 
 const findAllCategories = async (tagIds : any) => {

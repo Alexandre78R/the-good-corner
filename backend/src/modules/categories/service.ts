@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
-import { Category } from "../entities/category.entity";
-import { ICreateCategory } from "../modules/categories/types";
-import datasource from "../config/database";
+import { Category } from "./entity";
+import { ICreateCategory } from "./types";
+import datasource from "../../config/database";
 
 export default class CategoryService {
   db: Repository<Category>;
