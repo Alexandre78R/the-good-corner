@@ -1,128 +1,83 @@
-import { db } from "../../config/database";
-import { Ad } from "./types";
+import { Ad } from "./entity";
+import { In } from "typeorm";
+import { validate } from "class-validator";
 
-const findAllAds = (): Promise<Ad[]> => {
-  return new Promise<Ad[]>((resolve, reject) => {
+const findAllAds = async (tagIds : any) => {
+  return new Promise<Ad[]> ( async (resolve, reject) => {
     try {
-      db.all("SELECT * FROM ad", (err, rows) => {
-        if (err) {
-          console.error("Erreur lors de la récupération des annonces :", err);
-          reject(err);
-        } else {
-          const ads: Ad[] = rows as Ad[];
-          resolve(ads);
-        }
+      const ads = await Ad.find({
+        relations: {
+          category: true,
+          tags: true,
+        },
+        where: {
+          tags: {
+            id:
+              typeof tagIds === "string" && tagIds.length > 0
+                ? In(tagIds.split(",").map((t) => parseInt(t, 10)))
+                : undefined,
+          },
+        },
       });
+      resolve(ads)
     } catch (err) {
       console.error("err", err);
-      reject(err);
+      reject(err)
     }
   });
 };
 
-  const findByIDAds = (id: number) => {
-    return new Promise<Ad[]>(async (resolve, reject) => {
-      try {
-        db.all("SELECT * FROM ad WHERE id =  ?", [id],  (err, rows) => {
-          if (err) {
-            console.error("Erreur lors de la récupération des annonces :", err);
-            reject(err);
-          } else {
-            const ad: Ad[] = rows as Ad[];
-            resolve(ad);
-          }
-        });
-      } catch (err) {
-        console.error("err", err);
-        reject(err);
-      }
-    });
-  };
-
 const createAd = async (ad: Ad) => {
-    console.log("ad", ad)
-    return new Promise<Ad[]>(async (resolve, reject) => {
-      try {
-          db.run(
-              'INSERT INTO ad (title, owner, description, price, picture, location, createdAt, category_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-              [
-                ad.title,
-                ad.owner,
-                ad.description,
-                ad.price,
-                ad.picture,
-                ad.location,
-                ad.createdAt,
-                ad.category_id,
-              ],
-              function (err: any) {
-                if (err) {
-                  console.error('Erreur lors de l\'insertion de l\'annonce :', err);
-                  reject(err);
-                }
-                console.log('Nouvelle annonce insérée avec succès. ID:');
-                resolve([ad])
-              }
-          );
-      } catch (err) {
-          console.error("err", err);
-      }
-    })
+  return new Promise<Ad>(async (resolve, reject) => {
+    try {
+      const newAd = Ad.create(ad);
+      const errors = await validate(newAd);
+      if (errors.length !== 0) return reject(errors);
+      const newAdWithId = await newAd.save();
+      resolve(newAdWithId);
+    } catch (err) {
+      console.error("err", err);
+      reject(err)
+    }
+  })
 }
 
 const deleteBDDAd = async (id: number) => {
-  return new Promise<boolean>((resolve, reject) => {
-    db.run("DELETE FROM ad WHERE id = ?", [id], (err: any) => {
-      if (err) {
-        console.error('Erreur lors de la suppression de l\'annonce :', err);
-        reject(err);
-      } else {
-        console.log('Annonce supprimée avec succès. ID:', id);
-        resolve(true);
-      }
-    });
+  return new Promise<boolean>(async (resolve, reject) => {
+    try {
+      const adToDelete = await Ad.findOneBy({ id: id });
+      if (!adToDelete) return reject("error Ad Not found");
+      await adToDelete.remove();
+      resolve(true)
+    } catch (err) {
+      console.log(err);
+      reject(err)
+    }
   });
 };
 
-const updateBDDAd = async (sqlUpdate: string, params: string[]) => {
-  return new Promise<boolean>((resolve, reject) => {
-    db.run(sqlUpdate, params, (err: any) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(true);
-      }
-    });
+const updateBDDAd = async (sqlUpdate: string, params: string[], body: Ad) => {
+  return new Promise<Ad>(async (resolve, reject) => {
+    try {
+      const idUp = parseInt(params[params.length-1]);
+      const adToUpdate = await Ad.findOneBy({ id: idUp });
+      if (!adToUpdate) return reject("error Ad Not found");
+
+      await Ad.merge(adToUpdate, body);
+      const errors = await validate(adToUpdate);
+      if (errors.length !== 0) reject(errors);
+
+      resolve(await adToUpdate.save())
+    } catch (err) {
+      console.log(err);
+      reject(err)
+    }
   });
 };
 
-
-// server.put("/ads/:id", (request, response) => {
-//     const _id = parseInt(request.params.id);
-//     const updatedAd = request.body;
-  
-//     // Vérifier si l'objet updatedAd est vide
-    // if (Object.keys(updatedAd).length === 0) {
-    //   return response.sendStatus(204); // Aucune mise à jour nécessaire
-    // }
-  
-//     const params = [];
-//     const columnsToUpdate = Object.entries(updatedAd).map(([key, value]) => {
-//       params.push(value);
-//       return `${key} = ?`;
-//     });
-  
-//     // Générer la clause SQL pour la mise à jour
-//     const sqlUpdate = `UPDATE Ad SET ${columnsToUpdate.join(", ")} WHERE id = ?`;
-//     params.push(_id);
-  
-//     db.run(sqlUpdate, params, function (err) {
-//       if (err) {
-//         console.error(err);
-//         return response.status(400).send(err.message);
-//       }
-//       return response.sendStatus(204);
-//     });
-//   });
-
-export { findAllAds , createAd, findByIDAds, deleteBDDAd, updateBDDAd }; 
+export { 
+  findAllAds,
+  createAd,
+  deleteBDDAd,
+  updateBDDAd
+}; 

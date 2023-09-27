@@ -1,1 +1,1 @@
-GET http://localhost:3000/api/ads
+GET http://localhost:3000/api/ads?tagIds=1,2,3
