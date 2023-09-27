@@ -1,9 +1,9 @@
-import { Ad } from "./entity";
+import { Ad } from "../../entities/ads.entity";
 import { In } from "typeorm";
 import { validate } from "class-validator";
 
 const findAllAds = async (tagIds : any) => {
-  return new Promise<Ad[]> ( async (resolve, reject) => {
+  return new Promise<any> ( async (resolve, reject) => {
     try {
       const ads = await Ad.find({
         relations: {

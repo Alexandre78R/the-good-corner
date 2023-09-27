@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { Ad } from "./entity";
+import { Ad } from "../../entities/ads.entity";
 import datasource from "../../config/database";
 
 export default class AdsService {
