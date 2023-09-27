@@ -6,6 +6,6 @@ import { router as tagsRouter } from './tags';
 
 router.use("/ads", adsRouter);
 router.use("/categories", categoriesRouter);
-router.use("/categories", tagsRouter);
+router.use("/tags", tagsRouter);
 
 export { router };
