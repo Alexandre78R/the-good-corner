@@ -9,7 +9,8 @@ import { DataSource } from "typeorm";
 export default new DataSource({
   type: "sqlite",
   database: "the_good_corner.sqlite",
-  entities: ["src/entities/*.ts"],
+  // entities: ["src/entities/*.ts"],
+  entities: ["src/modules/*/entity.ts"],
   synchronize: true,
   // logging: ["query","error"],
   logging: true,
