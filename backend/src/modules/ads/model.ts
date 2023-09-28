@@ -1,24 +1,34 @@
 import { Ad } from "./entity";
-import { In } from "typeorm";
-import { validate } from "class-validator";
+import AdsService from "./service";
 
 const findAllAds = async (tagIds : any) => {
   return new Promise<any> ( async (resolve, reject) => {
     try {
-      const ads = await Ad.find({
-        relations: {
-          category: true,
-          tags: true,
-        },
-        where: {
-          tags: {
-            id:
-              typeof tagIds === "string" && tagIds.length > 0
-                ? In(tagIds.split(",").map((t) => parseInt(t, 10)))
-                : undefined,
-          },
-        },
-      });
+      const ads = await new AdsService().list(tagIds ? (tagIds as string) : "");
+      resolve(ads)
+    } catch (err) {
+      console.error("err", err);
+      reject(err)
+    }
+  });
+};
+
+const findAd = async (id : number) => {
+  return new Promise<any> ( async (resolve, reject) => {
+    try {
+      const ad = await new AdsService().find(id);
+      resolve(ad)
+    } catch (err) {
+      console.error("err", err);
+      reject(err)
+    }
+  });
+};
+
+const findAdCategory = async (id : number) => {
+  return new Promise<any> ( async (resolve, reject) => {
+    try {
+      const ads = await new AdsService().listByCategory(id);
       resolve(ads)
     } catch (err) {
       console.error("err", err);
@@ -30,11 +40,8 @@ const findAllAds = async (tagIds : any) => {
 const createAd = async (ad: Ad) => {
   return new Promise<Ad>(async (resolve, reject) => {
     try {
-      const newAd = Ad.create(ad);
-      const errors = await validate(newAd);
-      if (errors.length !== 0) return reject(errors);
-      const newAdWithId = await newAd.save();
-      resolve(newAdWithId);
+      const newAd = await new AdsService().create(ad);
+      resolve(newAd);
     } catch (err) {
       console.error("err", err);
       reject(err)
@@ -43,12 +50,10 @@ const createAd = async (ad: Ad) => {
 }
 
 const deleteBDDAd = async (id: number) => {
-  return new Promise<boolean>(async (resolve, reject) => {
+  return new Promise<Ad>(async (resolve, reject) => {
     try {
-      const adToDelete = await Ad.findOneBy({ id: id });
-      if (!adToDelete) return reject("error Ad Not found");
-      await adToDelete.remove();
-      resolve(true)
+      const adToDelete = await new AdsService().delete(id);
+      resolve(adToDelete)
     } catch (err) {
       console.log(err);
       reject(err)
@@ -60,14 +65,8 @@ const updateBDDAd = async (sqlUpdate: string, params: string[], body: Ad) => {
   return new Promise<Ad>(async (resolve, reject) => {
     try {
       const idUp = parseInt(params[params.length-1]);
-      const adToUpdate = await Ad.findOneBy({ id: idUp });
-      if (!adToUpdate) return reject("error Ad Not found");
-
-      await Ad.merge(adToUpdate, body);
-      const errors = await validate(adToUpdate);
-      if (errors.length !== 0) reject(errors);
-
-      resolve(await adToUpdate.save())
+      const adToUpdate = await new AdsService().update(idUp, body);
+      resolve(adToUpdate)
     } catch (err) {
       console.log(err);
       reject(err)
@@ -77,6 +76,8 @@ const updateBDDAd = async (sqlUpdate: string, params: string[], body: Ad) => {
 
 export { 
   findAllAds,
+  findAd,
+  findAdCategory,
   createAd,
   deleteBDDAd,
   updateBDDAd

@@ -18,9 +18,9 @@ const getAllCategories = async (req: Request, res: Response) => {
 
 const postCategories = async (req: Request, res: Response) => {
   try {
-    const newAd = await createCategories(req.body);
-    if(!newAd) return res.sendStatus(500).send("Error interne add Categorie !");
-    res.status(201).json({newAd});
+    const newCategorie = await createCategories(req.body);
+    if(!newCategorie) return res.sendStatus(500).send("Error interne add Categorie !");
+    res.status(201).json(newCategorie);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

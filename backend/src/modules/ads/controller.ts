@@ -3,6 +3,8 @@ import { Ad } from "./entity";
 import { CustomRequestUpdate } from "./types";
 import {
     findAllAds,
+    findAd,
+    findAdCategory,
     createAd,
     deleteBDDAd,
     updateBDDAd,
@@ -19,11 +21,35 @@ const getAllAds = async (req: Request, res: Response) => {
   }
 }
 
+const getAd = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+      const dataAd: Ad[] = await findAd(+id); 
+      if (dataAd.length === 0) return res.status(404).send("Not Found announce");
+      res.send(dataAd);
+  } catch (err: any) {
+      console.log('err', err);
+      res.status(500).json({error : err.message});
+  }
+}
+
+const getAdCategorie = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+      const dataAllAdsCategorie: Ad[] = await findAdCategory(+id); 
+      if (dataAllAdsCategorie.length === 0) return res.status(404).send("Not Found category");
+      res.send(dataAllAdsCategorie);
+  } catch (err: any) {
+      console.log('err', err);
+      res.status(500).json({error : err.message});
+  }
+}
+
 const postAd = async (req: Request, res: Response) => {
   try {
     const newAd = await createAd(req.body);
     if(!newAd) return res.sendStatus(500).send("Error interne add AD !");
-    res.status(201).json({newAd});
+    res.status(201).json(newAd);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -33,7 +59,7 @@ const postAd = async (req: Request, res: Response) => {
 const deleteAd = async (req: Request, res: Response) => {
   const idOfAdToDelete: number = parseInt(req.params.id, 10)
   try {
-    const deleteSuccess: boolean = await deleteBDDAd(idOfAdToDelete);
+    const deleteSuccess: Ad = await deleteBDDAd(idOfAdToDelete);
     if (!deleteSuccess) return res.status(500).json({ message: "Failed to delete ad" });
     res.status(204).json({ message: "ad deleted successfully!" });
   } catch (err: any) {
@@ -62,6 +88,8 @@ const updateAdController = async (req: CustomRequestUpdate, res: Response) => {
 
 export {
     getAllAds,
+    getAd,
+    getAdCategorie,
     postAd,
     deleteAd,
     updateAdController,
