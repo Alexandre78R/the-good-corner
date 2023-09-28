@@ -1,6 +1,6 @@
 import { Response, NextFunction  } from "express";
 import { CustomRequestUpdate } from "../modules/ads/types";
-import { Ad } from "../modules/ads/entity";
+import { Ad } from "../entities/ads.entity";
 
 interface ValidationError {
     field: string;

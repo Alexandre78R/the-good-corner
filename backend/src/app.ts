@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { app } from "./config/server";
 import db from "./config/database"
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Hello World!");
