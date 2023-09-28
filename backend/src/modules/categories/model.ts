@@ -1,4 +1,4 @@
-import { Category } from "../../entities/categories.entity";
+import { Category } from "./entity";
 import CategoryService from "./service";
 import { ICreateCategory } from "./types";
 

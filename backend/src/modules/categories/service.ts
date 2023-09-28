@@ -1,5 +1,5 @@
 import { Repository } from "typeorm";
-import { Category } from "../../entities/categories.entity";
+import { Category } from "./entity";
 import { ICreateCategory } from "./types";
 import datasource from "../../config/database";
 

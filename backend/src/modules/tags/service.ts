@@ -1,5 +1,5 @@
 import { Like, Repository } from "typeorm";
-import { Tag } from "../../entities/tags.entity";
+import { Tag } from "./entity";
 import datasource from "../../config/database";
 import { ICreateTag } from "./types";
 import { validate } from "class-validator";
