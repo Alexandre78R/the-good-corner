@@ -6,6 +6,7 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: 
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
 export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -45,7 +46,6 @@ export type Category = {
 export type CreateAdInput = {
   category?: InputMaybe<PartialCategoryInput>;
   description: Scalars['String']['input'];
-  id?: InputMaybe<Scalars['ID']['input']>;
   location: Scalars['String']['input'];
   owner: Scalars['String']['input'];
   picture: Scalars['String']['input'];
@@ -59,7 +59,7 @@ export type CreateBookInput = {
 };
 
 export type CreateCategoryInput = {
-  name?: InputMaybe<Scalars['String']['input']>;
+  name: Scalars['String']['input'];
 };
 
 export type Mutation = {
@@ -88,7 +88,7 @@ export type MutationCreateCategoryArgs = {
 
 
 export type MutationDeleteAdArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
 };
 
 
@@ -97,7 +97,7 @@ export type MutationUpdateAdArgs = {
 };
 
 export type PartialCategoryInput = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
 };
 
 export type Query = {
@@ -112,17 +112,17 @@ export type Query = {
 
 
 export type QueryFindAdByIdArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
 };
 
 
 export type QueryFindCategoryArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
 };
 
 
 export type QueryListAdsByCategoryArgs = {
-  id?: InputMaybe<Scalars['ID']['input']>;
+  id: Scalars['ID']['input'];
 };
 
 export type UpdateAdInput = {
@@ -281,16 +281,16 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addBook?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType, Partial<MutationAddBookArgs>>;
   createAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, Partial<MutationCreateAdArgs>>;
   createCategory?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, Partial<MutationCreateCategoryArgs>>;
-  deleteAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, Partial<MutationDeleteAdArgs>>;
+  deleteAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<MutationDeleteAdArgs, 'id'>>;
   updateAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, Partial<MutationUpdateAdArgs>>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
-  findAdById?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, Partial<QueryFindAdByIdArgs>>;
-  findCategory?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, Partial<QueryFindCategoryArgs>>;
+  findAdById?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<QueryFindAdByIdArgs, 'id'>>;
+  findCategory?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryFindCategoryArgs, 'id'>>;
   listAds?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ad']>>>, ParentType, ContextType>;
-  listAdsByCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ad']>>>, ParentType, ContextType, Partial<QueryListAdsByCategoryArgs>>;
+  listAdsByCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ad']>>>, ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
   listCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Category']>>>, ParentType, ContextType>;
 }>;
 

@@ -1,9 +1,10 @@
 import { In, Repository } from "typeorm";
-import { Ad } from "./entity";
+import { Ad, CreateAdInput, UpdateAdInput } from "./entity";
 import datasource from "../../config/database";
 import { IAdForm } from "./types";
 import { validate } from "class-validator";
 import CategoryService from "../categories/service";
+import { aggregateErrors } from "../../libs/utilities";
 
 export default class AdsService {
   db: Repository<Ad>;
@@ -36,42 +37,65 @@ export default class AdsService {
   }
 
   async find(id: number) {
-    return await this.db.findOne({
+    const ad = await this.db.findOne({
       where: { id },
       relations: { category: true },
     });
+
+    // if (!ad) {
+    //   // throw new Error("L'annonce n'existe pas");
+    //   throw new AggregateError([
+    //     {
+    //       field: null,
+    //       message: "L'annonce n'existe pas",
+    //     },
+    //   ]);
+    // }
+    return ad;
   }
 
-  async create(data: IAdForm) {
-    const newAd = this.db.create(data);
-    const errors = await validate(newAd);
-
-    if (errors.length !== 0) {
-      console.log(errors);
-      throw new Error("il y a eu une erreur");
-    }
-    const { category, ...rest } = { ...newAd };
-    const categoryToLink = await new CategoryService().find(category?.id);
+  async create(data: CreateAdInput) {
+    const categoryToLink = await new CategoryService().find(
+      +data?.category?.id
+    );
     if (!categoryToLink) {
       throw new Error("La catégorie n'existe pas!");
     }
-    return await this.db.save({ ...rest, category: categoryToLink });
+    const newAd = this.db.create({ ...data, category: categoryToLink });
+    const errors = await validate(newAd);
+
+    if (errors.length !== 0) {
+      throw new AggregateError(aggregateErrors(errors));
+    }
+    return await this.db.save(newAd);
   }
 
   async delete(id: number) {
     const adToDelete = await this.find(id);
+    console.log("adToDelete", adToDelete);
     if (!adToDelete) {
       throw new Error("L'annonce n'existe pas!");
     }
+
     return await this.db.remove(adToDelete);
   }
 
-  async update(id: number, data: IAdForm) {
+  async update(id: number, data: Omit<UpdateAdInput, "id">) {
+    const categoryToLink = await new CategoryService().find(
+      +data?.category?.id
+    );
+    if (!categoryToLink) {
+      throw new Error("La catégorie n'existe pas!");
+    }
+
     const adToUpdate = await this.find(id);
     if (!adToUpdate) {
       throw new Error("L'annonce n'existe pas!");
     }
-    const adToSave = this.db.merge(adToUpdate, data);
+    const adToSave = this.db.merge(adToUpdate, {
+      ...data,
+      category: categoryToLink,
+    });
     const errors = await validate(adToSave);
     if (errors.length !== 0) {
       console.log(errors);

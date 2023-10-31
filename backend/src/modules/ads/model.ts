@@ -40,6 +40,7 @@ const findAdCategory = async (id : number) => {
 const createAd = async (ad: any) => {
   return new Promise<Ad>(async (resolve, reject) => {
     try {
+      console.log("ad", ad)
       const newAd = await new AdsService().create(ad);
       resolve(newAd);
     } catch (err) {
@@ -61,7 +62,7 @@ const deleteBDDAd = async (id: number) => {
   });
 };
 
-const updateBDDAd = async (sqlUpdate: string, params: string[], body: Ad) => {
+const updateBDDAd = async (sqlUpdate: string, params: string[], body: any) => {
   return new Promise<Ad>(async (resolve, reject) => {
     try {
       const idUp = parseInt(params[params.length-1]);

@@ -12,6 +12,71 @@
 #     tags: Tag[];
 # }
 
+# type Ad {
+#   id: ID
+#   title: String
+#   description: String
+#   owner: String
+#   price: Float
+#   location: String
+#   picture: String
+#   createdAt: String
+#   updatedAt: String
+#   category: Category
+#   # tags: [Tag]
+# }
+# type Query {
+#   listAds: [Ad]
+#   listAdsByCategory(id: ID): [Ad]
+#   findAdById(id: ID): Ad
+# }
+
+# type Mutation {
+#   createAd(data: CreateAdInput): Ad
+#   deleteAd(id: ID): Ad
+#   updateAd(data: UpdateAdInput) : Ad
+# }
+
+# input PartialCategoryInput {
+#   id: ID
+# }
+# input CreateAdInput {
+#   id: ID
+#   title: String!
+#   description: String!
+#   owner: String!
+#   price: Float!
+#   location: String!
+#   picture: String!
+#   category: PartialCategoryInput
+# }
+
+# input UpdateAdInput {
+#   id: ID!
+#   title: String
+#   description: String
+#   owner: String
+#   price: Float
+#   location: String
+#   picture: String
+#   category: PartialCategoryInput
+# }
+
+#Query et Mutation
+type Query {
+  listAds: [Ad]
+  listAdsByCategory(id: ID!): [Ad]
+  findAdById(id: ID!): Ad
+}
+
+type Mutation {
+  createAd(data: CreateAdInput): Ad
+  deleteAd(id: ID!): Ad
+  updateAd(data: UpdateAdInput): Ad
+}
+
+
+#Types
 type Ad {
   id: ID
   title: String
@@ -25,23 +90,13 @@ type Ad {
   category: Category
   # tags: [Tag]
 }
-type Query {
-  listAds: [Ad]
-  listAdsByCategory(id: ID): [Ad]
-  findAdById(id: ID): Ad
-}
 
-type Mutation {
-  createAd(data: CreateAdInput): Ad
-  deleteAd(id: ID): Ad
-  updateAd(data: UpdateAdInput) : Ad
-}
 
+#Inputs
 input PartialCategoryInput {
-  id: ID
+  id: ID!
 }
 input CreateAdInput {
-  id: ID
   title: String!
   description: String!
   owner: String!
