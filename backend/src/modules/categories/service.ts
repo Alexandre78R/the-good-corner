@@ -10,11 +10,13 @@ export default class CategoryService {
   }
 
   async list() {
+    console.log("TEST 2");
     const categories = await this.db.find({
       relations: {
         ads: true,
       },
     });
+    console.log("TEST 3");
 
     return categories;
   }
@@ -25,6 +27,7 @@ export default class CategoryService {
   }
 
   async find(id: number) {
+    console.log("async find,", id)
     return await this.db.findOneBy({ id });
   }
 }

@@ -2,11 +2,23 @@ import { Category } from "./entity";
 import CategoryService from "./service";
 import { ICreateCategory } from "./types";
 
-const findAllCategories = async (tagIds : any) => {
+const findAllCategories = async () => {
   return new Promise<ICreateCategory[]> ( async (resolve, reject) => {
     try {
       const categories = await new CategoryService().list();
       resolve(categories)
+    } catch (err) {
+      console.error("err", err);
+      reject(err)
+    }
+  });
+};
+
+const findCategorie = async (id : number) => {
+  return new Promise<any> ( async (resolve, reject) => {
+    try {
+      const categorie = await new CategoryService().find(+id);
+      resolve(categorie)
     } catch (err) {
       console.error("err", err);
       reject(err)
@@ -29,5 +41,6 @@ const createCategories = async (categorie: ICreateCategory) => {
 
 export { 
   findAllCategories,
+  findCategorie,
   createCategories,
 }; 

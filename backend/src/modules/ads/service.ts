@@ -11,7 +11,7 @@ export default class AdsService {
     this.db = datasource.getRepository(Ad);
   }
 
-  async list(tagIds: string) {
+  async list(tagIds?: string) {
     return await this.db.find({
       relations: {
         category: true,

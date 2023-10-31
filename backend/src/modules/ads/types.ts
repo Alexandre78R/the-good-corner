@@ -21,12 +21,23 @@ interface Ad {
     tags: Tag[];
 }
 
-  interface IAdForm extends Omit<Ad, "createdAt" | "updatedAt" | "tags"> {
-    id?: number; // Maintenant, id est obligatoire et de type number
+//   interface IAdForm extends Omit<Ad, "createdAt" | "updatedAt" | "tags"> {
+//     id?: number; // Maintenant, id est obligatoire et de type number
+//     category: Omit<Category, "name">;
+// }
+
+interface IAdForm extends Omit<Ad, "createdAt" | "updatedAt" | "tags"> {
+    id?: number | undefined; // on prévoir l'édition => surcharge de "id", lors de la création l'id n'est pas défini
     category: Omit<Category, "name">;
-}
+  }
+  
+  export interface IUpdateForm extends IAdForm {
+    id: number;
+  }
+  
 
 export { 
     CustomRequestUpdate,
-    IAdForm
+    IAdForm,
+    Ad
 }

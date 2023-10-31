@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "resetDB": "ts-node-dev ./src/config/resetDb.ts",
-    "start": "ts-node-dev ./src/app.ts"
+    "start": "ts-node-dev --watch ./src src/app.ts" 
   },
   "repository": {
     "type": "git",
