@@ -11,7 +11,7 @@ import {
 } from "@/types/graphql";
 function ViewCategory() {
   const router = useRouter();
-  console.log("router.query.id", router.query.id);
+  console.log("router.query.id", router.query);
   const [ads, setAds] = useState<Ad[]>([]);
 
   const [getAds, { data, loading, error }] = useListAdsByCategoryLazyQuery();

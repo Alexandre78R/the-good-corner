@@ -6,7 +6,7 @@ function Card({ id, picture, price, title }: IAdCard) {
   return (
     <div className={styles.card}>
       <div>{title}</div>
-      <Link href={`/ads/view/${id}`} className={styles.imageBloc}>
+      <Link href={`/ads/adview/${id}`} className={styles.imageBloc}>
         <img src={picture} className={styles.imageAd} />
       </Link>
       <div className={styles.bottomCard}>
