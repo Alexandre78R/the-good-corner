@@ -28,7 +28,7 @@ function ViewAd() {
     return <div>{error.message}</div>;
   }
 
-  return <div>{data?.findAdById && <SheetAd {...data?.findAdById} />}</div>;
+  return <div>{<SheetAd {...data?.findAdById} />}</div>;
 }
 
 export default ViewAd;

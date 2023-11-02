@@ -21,7 +21,6 @@ export class AdResolver {
   async listAds (){
     // const ads = await new AdsService().list();
     const ads = await findAllAds();
-    console.log("ADS", ads);
     return ads;
   }
 
@@ -42,14 +41,14 @@ export class AdResolver {
     console.log(id)
     const ad = await findAd(+id);
     if (!ad) {
-    throw new Error("L'annonce n'existe pas");
+    throw new Error("L'annonce n'existe pas !");
     }
+    // console.log("ad -----------------------------", ad)
     return ad;
   }
 
   @Mutation(() => Ad)
   async createAd(@Arg("data") data: CreateAdInput) {
-    console.log("data", data)
     const newAd = await createAd(data);
     return newAd;
   }
@@ -67,8 +66,6 @@ export class AdResolver {
     // return await deleteBDDAd(+id);
     const { id, ...outherData } = data;
     // return await new AdsService().update(id, body);
-    console.log("id", id);
-    console.log("outherData", outherData);
     return await updateBDDAdGraphQl(+id, outherData);
   }
 }

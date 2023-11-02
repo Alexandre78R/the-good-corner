@@ -33,7 +33,7 @@ function ViewEdit() {
           <div>Description: {ad?.description}</div> */}
         </>
       ) : (
-        <div>L annonce n existe pas</div>
+        <div>L'annonce n'existe pas</div>
       )}
     </div>
   );

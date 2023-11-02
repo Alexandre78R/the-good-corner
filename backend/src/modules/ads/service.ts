@@ -72,7 +72,6 @@ export default class AdsService {
 
   async delete(id: number) {
     const adToDelete = await this.find(id);
-    console.log("adToDelete", adToDelete);
     if (!adToDelete) {
       throw new Error("L'annonce n'existe pas!");
     }
@@ -98,7 +97,6 @@ export default class AdsService {
     });
     const errors = await validate(adToSave);
     if (errors.length !== 0) {
-      console.log(errors);
       throw new Error("il y a eu une erreur");
     }
 
