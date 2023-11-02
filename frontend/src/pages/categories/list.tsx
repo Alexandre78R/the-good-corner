@@ -17,7 +17,8 @@ function Categories() {
    *  
    *  
    *========================**/
-
+  console.log('toto')
+  console.log("LIST_CATEGORIES", LIST_CATEGORIES)
   const { loading, data, error } = useQuery(LIST_CATEGORIES);
   console.log('%c⧭', 'color: #aa00ff', error);
   console.log('%c⧭', 'color: #00a3cc', loading);
