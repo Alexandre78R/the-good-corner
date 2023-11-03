@@ -6,16 +6,37 @@ import {
   useListCategoriesQuery,
   useCreateAdMutation,
   useUpdateAdMutation,
+  FindForEditAdByIdQueryVariables,
+  Ad,
+  PartialCategoryInput,
+  CreateAdInput,
+  UpdateAdInput,
+  FindAdByIdQueryResult,
+  FindAdByIdQueryHookResult,
+  FindForEditAdByIdQuery,
+  ListCategoriesQueryVariables,
 } from "@/types/graphql";
+import { LIST_CATEGORIES } from "@/requetes/queries/categories.queries";
+import { useQuery } from "@apollo/client";
+import { ListCategoriesQuery } from "@/types/graphql";
 interface IError {
   field: string | null;
   message: string;
 }
+interface InitialData extends Omit<Ad, "category" | "__typename"> {
+  category: { id: string };
+  // description?: string | null;
+}
+function Form({ data }: { data: FindForEditAdByIdQuery["findAdById"] }) {
+  const { createdAt, updatedAt, ...initialData } = data;
 
-function Form({ initialData }: FormEditOrCreate) {
   const router = useRouter();
 
   const { data: categoriesData } = useListCategoriesQuery();
+  // const { data: categoriesData } = useQuery<
+  //   ListCategoriesQuery,
+  //   ListCategoriesQueryVariables
+  // >(LIST_CATEGORIES);
 
   const [createAd] = useCreateAdMutation({
     onCompleted(data) {
@@ -30,7 +51,9 @@ function Form({ initialData }: FormEditOrCreate) {
   });
 
   const [errors, setErrors] = useState<IError[]>([] as IError[]);
-  const [formulaireData, setFormulaireData] = useState<IAdForm>({} as IAdForm);
+  const [formulaireData, setFormulaireData] = useState<CreateAdInput>(
+    {} as CreateAdInput
+  );
 
   useEffect(() => {
     console.log("errors", errors);
@@ -85,7 +108,7 @@ function Form({ initialData }: FormEditOrCreate) {
     if (!initialData) {
       createAd({
         variables: {
-          data: formulaireData,
+          data: formulaireData as CreateAdInput,
         },
       });
 
@@ -111,11 +134,11 @@ function Form({ initialData }: FormEditOrCreate) {
       //     setErrors(err.response.data?.errors);
       //   });
 
-        const formD = formulaireData as IUpdateForm;
-        
+      const formD = formulaireData as UpdateAdInput;
+
       updateAd({
         variables: {
-          data: {...formD, id: router.quer},
+          data: { ...formD, id: router.query.id as string },
         },
       });
     }
@@ -136,7 +159,7 @@ function Form({ initialData }: FormEditOrCreate) {
         placeholder="description"
         className={styles.inputForm}
         onChange={handleChange}
-        value={formulaireData.description}
+        value={formulaireData.description ?? ""}
       />
       <input
         name="owner"

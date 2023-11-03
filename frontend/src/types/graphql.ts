@@ -160,6 +160,13 @@ export type FindAdByIdQueryVariables = Exact<{
 
 export type FindAdByIdQuery = { __typename?: 'Query', findAdById: { __typename?: 'Ad', title: string, description?: string | null, price: number } };
 
+export type FindForEditAdByIdQueryVariables = Exact<{
+  findAdById: Scalars['String']['input'];
+}>;
+
+
+export type FindForEditAdByIdQuery = { __typename?: 'Query', findAdById: { __typename?: 'Ad', id: string, title: string, description?: string | null, owner: string, price: number, location: string, picture: string, createdAt: string, updatedAt: string, category: { __typename?: 'Category', id: string } } };
+
 export type ListCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -330,6 +337,57 @@ export type FindAdByIdQueryHookResult = ReturnType<typeof useFindAdByIdQuery>;
 export type FindAdByIdLazyQueryHookResult = ReturnType<typeof useFindAdByIdLazyQuery>;
 export type FindAdByIdSuspenseQueryHookResult = ReturnType<typeof useFindAdByIdSuspenseQuery>;
 export type FindAdByIdQueryResult = Apollo.QueryResult<FindAdByIdQuery, FindAdByIdQueryVariables>;
+export const FindForEditAdByIdDocument = gql`
+    query FindForEditAdById($findAdById: String!) {
+  findAdById(id: $findAdById) {
+    id
+    title
+    description
+    owner
+    price
+    location
+    picture
+    createdAt
+    updatedAt
+    category {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindForEditAdByIdQuery__
+ *
+ * To run a query within a React component, call `useFindForEditAdByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindForEditAdByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindForEditAdByIdQuery({
+ *   variables: {
+ *      findAdById: // value for 'findAdById'
+ *   },
+ * });
+ */
+export function useFindForEditAdByIdQuery(baseOptions: Apollo.QueryHookOptions<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>(FindForEditAdByIdDocument, options);
+      }
+export function useFindForEditAdByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>(FindForEditAdByIdDocument, options);
+        }
+export function useFindForEditAdByIdSuspenseQuery(baseOptions?: Apollo.SuspenseQueryHookOptions<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>(FindForEditAdByIdDocument, options);
+        }
+export type FindForEditAdByIdQueryHookResult = ReturnType<typeof useFindForEditAdByIdQuery>;
+export type FindForEditAdByIdLazyQueryHookResult = ReturnType<typeof useFindForEditAdByIdLazyQuery>;
+export type FindForEditAdByIdSuspenseQueryHookResult = ReturnType<typeof useFindForEditAdByIdSuspenseQuery>;
+export type FindForEditAdByIdQueryResult = Apollo.QueryResult<FindForEditAdByIdQuery, FindForEditAdByIdQueryVariables>;
 export const ListCategoriesDocument = gql`
     query ListCategories {
   listCategories {

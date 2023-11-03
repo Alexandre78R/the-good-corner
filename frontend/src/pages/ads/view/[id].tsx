@@ -32,24 +32,3 @@ function ViewAd() {
 }
 
 export default ViewAd;
-
-
-
-// import { useRouter } from 'next/router';
-
-// const AdView = () => {
-//   const router = useRouter();
-//   const { id } = router.query;
-
-//   // Utilisez l'ID pour charger et afficher les données de l'annonce
-//   // ...
-
-//   return (
-//     <div>
-//       <h1>Ad ID: {id}</h1>
-//       {/* Affichez les détails de l'annonce ici */}
-//     </div>
-//   );
-// };
-
-// export default AdView;

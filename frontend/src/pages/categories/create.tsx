@@ -17,3 +17,4 @@ Categories.getLayout = function getLayout(page: any) {
   );
 };
 export default Categories;
+
