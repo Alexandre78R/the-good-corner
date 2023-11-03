@@ -139,6 +139,13 @@ export type CreateAdMutationVariables = Exact<{
 
 export type CreateAdMutation = { __typename?: 'Mutation', createAd: { __typename?: 'Ad', category: { __typename?: 'Category', id: string } } };
 
+export type UpdateAdMutationVariables = Exact<{
+  data: UpdateAdInput;
+}>;
+
+
+export type UpdateAdMutation = { __typename?: 'Mutation', updateAd: { __typename?: 'Ad', id: string, title: string, description?: string | null, owner: string, price: number, location: string, picture: string, createdAt: string, updatedAt: string, category: { __typename?: 'Category', id: string } } };
+
 export type ListAdsByCategoryQueryVariables = Exact<{
   listAdsByCategoryId: Scalars['String']['input'];
 }>;
@@ -194,6 +201,50 @@ export function useCreateAdMutation(baseOptions?: Apollo.MutationHookOptions<Cre
 export type CreateAdMutationHookResult = ReturnType<typeof useCreateAdMutation>;
 export type CreateAdMutationResult = Apollo.MutationResult<CreateAdMutation>;
 export type CreateAdMutationOptions = Apollo.BaseMutationOptions<CreateAdMutation, CreateAdMutationVariables>;
+export const UpdateAdDocument = gql`
+    mutation UpdateAd($data: UpdateAdInput!) {
+  updateAd(data: $data) {
+    id
+    title
+    description
+    owner
+    price
+    location
+    picture
+    createdAt
+    updatedAt
+    category {
+      id
+    }
+  }
+}
+    `;
+export type UpdateAdMutationFn = Apollo.MutationFunction<UpdateAdMutation, UpdateAdMutationVariables>;
+
+/**
+ * __useUpdateAdMutation__
+ *
+ * To run a mutation, you first call `useUpdateAdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateAdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateAdMutation, { data, loading, error }] = useUpdateAdMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useUpdateAdMutation(baseOptions?: Apollo.MutationHookOptions<UpdateAdMutation, UpdateAdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateAdMutation, UpdateAdMutationVariables>(UpdateAdDocument, options);
+      }
+export type UpdateAdMutationHookResult = ReturnType<typeof useUpdateAdMutation>;
+export type UpdateAdMutationResult = Apollo.MutationResult<UpdateAdMutation>;
+export type UpdateAdMutationOptions = Apollo.BaseMutationOptions<UpdateAdMutation, UpdateAdMutationVariables>;
 export const ListAdsByCategoryDocument = gql`
     query ListAdsByCategory($listAdsByCategoryId: String!) {
   listAdsByCategory(id: $listAdsByCategoryId) {

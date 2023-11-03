@@ -1,9 +1,12 @@
-import axiosInstance from "@/lib/axiosInstance";
 import styles from "@/styles/pages/ads/Form.module.css";
-import { Ad, IAdForm, FormEditOrCreate } from "@/types/ads";
-import { Category } from "@/types/categories";
+import { IAdForm, FormEditOrCreate, IUpdateForm } from "@/types/ads";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import {
+  useListCategoriesQuery,
+  useCreateAdMutation,
+  useUpdateAdMutation,
+} from "@/types/graphql";
 interface IError {
   field: string | null;
   message: string;
@@ -11,7 +14,21 @@ interface IError {
 
 function Form({ initialData }: FormEditOrCreate) {
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
+
+  const { data: categoriesData } = useListCategoriesQuery();
+
+  const [createAd] = useCreateAdMutation({
+    onCompleted(data) {
+      router.push(`/categories/view/${data.createAd.category?.id}`);
+    },
+  });
+
+  const [updateAd] = useUpdateAdMutation({
+    onCompleted(data) {
+      router.push(`/categories/view/${data.updateAd.category?.id}`);
+    },
+  });
+
   const [errors, setErrors] = useState<IError[]>([] as IError[]);
   const [formulaireData, setFormulaireData] = useState<IAdForm>({} as IAdForm);
 
@@ -19,13 +36,6 @@ function Form({ initialData }: FormEditOrCreate) {
     console.log("errors", errors);
   }, [errors]);
   useEffect(() => {
-    axiosInstance
-      .get<Category[]>("/categories/list", {})
-      .then(({ data }) => setCategories(data))
-      .catch((err) => {
-        console.log(err);
-      });
-
     if (initialData) {
       setFormulaireData(initialData);
     }
@@ -71,28 +81,43 @@ function Form({ initialData }: FormEditOrCreate) {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setErrors([]);
+
     if (!initialData) {
-      axiosInstance
-        .post("/ads/create", formulaireData)
-        .then(({ data }) => {
-          //si tout se passe bien, rediriger vers la catégorie
-          router.push(`/categories/view/${data.category?.id}`);
-        })
-        .catch((err) => {
-          console.log(err);
-          setErrors(err.response.data?.errors);
-        });
+      createAd({
+        variables: {
+          data: formulaireData,
+        },
+      });
+
+      // axiosInstance
+      //   .post("/ads/create", formulaireData)
+      //   .then(({ data }) => {
+      //     //si tout se passe bien, rediriger vers la catégorie
+      //     router.push(`/categories/view/${data.category?.id}`);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     setErrors(err.response.data?.errors);
+      //   });
     } else {
       //faire l'update
-      axiosInstance
-        .patch(`/ads/update/${initialData.id}`, formulaireData)
-        .then(({ data }) => {
-          router.push(`/categories/view/${data.category?.id}`);
-        })
-        .catch((err) => {
-          console.log(err);
-          setErrors(err.response.data?.errors);
-        });
+      // axiosInstance
+      //   .patch(`/ads/update/${initialData.id}`, formulaireData)
+      //   .then(({ data }) => {
+      //     router.push(`/categories/view/${data.category?.id}`);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //     setErrors(err.response.data?.errors);
+      //   });
+
+        const formD = formulaireData as IUpdateForm;
+        
+      updateAd({
+        variables: {
+          data: {...formD, id: router.quer},
+        },
+      });
     }
   };
 
@@ -153,7 +178,7 @@ function Form({ initialData }: FormEditOrCreate) {
         value={formulaireData.category?.id}
       >
         <option>Choisissez une catégorie</option>
-        {categories.map((c) => (
+        {categoriesData?.listCategories.map((c) => (
           <option key={c.id} value={c.id}>
             {c.name}
           </option>

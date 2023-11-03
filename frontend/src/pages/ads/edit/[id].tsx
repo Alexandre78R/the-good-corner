@@ -1,22 +1,27 @@
+//frontend/src/pages/ads/edit/[id].tsx
+
+
 import Form from "@/components/ads/Form";
 import axiosInstance from "@/lib/axiosInstance";
 import { Ad } from "@/types/ads";
+import { useFindAdByIdLazyQuery } from "@/types/graphql";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 function ViewEdit() {
   const router = useRouter();
-  const [ad, setAd] = useState<Ad>();
-  const [loading, setLoading] = useState<boolean>(true);
+
+  const [ getAd, { data, loading } ] = useFindAdByIdLazyQuery()
 
   useEffect(() => {
-    if (router.query.id) {
-      axiosInstance.get<Ad>(`/ads/find/${router.query.id}`).then(({ data }) => {
-        setAd(data);
-        setLoading(false);
-      });
+    const { id  } = router.query
+    if(id) {
+      getAd({
+        variables: {findAdById: id as string}
+      })
     }
-  }, [router.query.id]);
+
+      }, [router.query.id]);
 
   if (loading) {
     return <div>Chargement en cours</div>;
@@ -24,9 +29,9 @@ function ViewEdit() {
 
   return (
     <div>
-      {ad ? (
+      {data?.findAdById ? (
         <>
-          <Form initialData={ad}/>
+          <Form initialData={data?.findAdById}/>
           {/* <SheetAd {...ad} /> */}
           {/* <div>Titre: {ad?.title}</div>
           <div>Prix: {ad?.price}</div>

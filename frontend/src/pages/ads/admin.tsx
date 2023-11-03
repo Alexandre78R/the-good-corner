@@ -1,8 +1,5 @@
-import axiosInstance from "@/lib/axiosInstance";
 import Link from "next/link";
 import styles from "@/styles/pages/ads/Form.module.css";
-import { Ad } from "@/types/ads";
-import { Category } from "@/types/categories";
 import { formatAmount } from "@/lib/utilities";
 import { useEffect, useState } from "react";
 import { useListAdsByCategoryLazyQuery, useListCategoriesQuery } from "@/types/graphql";
@@ -20,7 +17,6 @@ function AdminAds() {
 
   useEffect(() => {
     if (filter) {
-      console.log("ALLER CHERCHER LES ANNONCES DE " + filter);
       // getAdsByCategory({variables: {listAdsByCategoryId: filter.toString()}})
       getAdsByCategory({variables: {listAdsByCategoryId: `${filter}`}})
     }
@@ -61,8 +57,8 @@ function AdminAds() {
               </tr>
             </thead>
             <tbody>
-              {dataAds?.listAdsByCategory.map((ad,index) => (
-                <tr key={index}>
+              {dataAds?.listAdsByCategory.map((ad) => (
+                <tr key={ad.id}>
                   <td>{ad.title}</td>
                   <td>{formatAmount(ad.price)}</td>
                   <td>

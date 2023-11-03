@@ -66,7 +66,8 @@ export class AdResolver {
     // return await deleteBDDAd(+id);
     const { id, ...outherData } = data;
     // return await new AdsService().update(id, body);
-    return await updateBDDAdGraphQl(+id, outherData);
+    const updateAdBdd = await updateBDDAdGraphQl(+id, outherData)
+    return updateAdBdd;
   }
 }
 
