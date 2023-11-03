@@ -1,7 +1,7 @@
 import { Ad } from "./entity";
 import AdsService from "./service";
 
-const findAllAds = async (tagIds : any) => {
+const findAllAds = async (tagIds? : any) => {
   return new Promise<any> ( async (resolve, reject) => {
     try {
       const ads = await new AdsService().list(tagIds ? (tagIds as string) : "");
@@ -37,9 +37,10 @@ const findAdCategory = async (id : number) => {
   });
 };
 
-const createAd = async (ad: Ad) => {
+const createAd = async (ad: any) => {
   return new Promise<Ad>(async (resolve, reject) => {
     try {
+      console.log("ad", ad)
       const newAd = await new AdsService().create(ad);
       resolve(newAd);
     } catch (err) {
@@ -61,11 +62,23 @@ const deleteBDDAd = async (id: number) => {
   });
 };
 
-const updateBDDAd = async (sqlUpdate: string, params: string[], body: Ad) => {
+const updateBDDAd = async (sqlUpdate: string, params: string[], body: any) => {
   return new Promise<Ad>(async (resolve, reject) => {
     try {
       const idUp = parseInt(params[params.length-1]);
       const adToUpdate = await new AdsService().update(idUp, body);
+      resolve(adToUpdate)
+    } catch (err) {
+      console.log(err);
+      reject(err)
+    }
+  });
+};
+
+const updateBDDAdGraphQl = async (id : number, body: any) => {
+  return new Promise<Ad>(async (resolve, reject) => {
+    try {
+      const adToUpdate = await new AdsService().update(id, body);
       resolve(adToUpdate)
     } catch (err) {
       console.log(err);
@@ -80,5 +93,6 @@ export {
   findAdCategory,
   createAd,
   deleteBDDAd,
-  updateBDDAd
+  updateBDDAd,
+  updateBDDAdGraphQl
 }; 

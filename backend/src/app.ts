@@ -1,21 +1,28 @@
 import "reflect-metadata";
-import { Request, Response } from "express";
-import { app } from "./config/server";
-import db from "./config/database"
+import { ApolloServer } from "@apollo/server";
+import { startStandaloneServer } from "@apollo/server/standalone";
+import db from "./config/database";
+import { buildSchema } from "type-graphql";
+import CategoryResolver from "./resolvers/category.resolver";
+import { AdResolver } from "./resolvers/ad.resolver";
 
-const port = process.env.PORT || 8000;
+async function main() {
+  const schema = await buildSchema({
+    resolvers: [CategoryResolver, AdResolver],
+  });
+  const server = new ApolloServer<{}>({
+    schema,
+  });
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("Hello World!");
-});
+  const { url } = await startStandaloneServer(server, {
+    listen: { port: 4000 },
+    context: async ({ req, res }) => {
+      return {};
+    },
+  });
 
-app.get("*", (req: Request, res: Response) => {
-    res.redirect('/')
-});
+  await db.initialize();
 
-app.listen(port, async () => {
-    await db.initialize();
-    console.log("Serveur open PORT :", port)
-});
-
-export { app }
+  console.log(`🚀  Server ready at: ${url}`);
+}
+main();
