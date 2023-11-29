@@ -50,4 +50,3 @@ export class CreateCategoryInput {
 //   @Field({nullable: true})
 //   infos?: InfoInput;
 // }
-
