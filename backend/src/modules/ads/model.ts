@@ -1,3 +1,4 @@
+import { Category } from "../categories/entity";
 import { Ad } from "./entity";
 import AdsService from "./service";
 
@@ -87,6 +88,18 @@ const updateBDDAdGraphQl = async (id : number, body: any) => {
   });
 };
 
+const listWithFilterModel = async (filter: any) => {
+  return new Promise<Ad[]>(async (resolve, reject) => {
+    try {
+      const adToUpdate = await new AdsService().listWithFilter(filter);
+      resolve(adToUpdate)
+    } catch (err) {
+      console.log(err);
+      reject(err)
+    }
+  });
+};
+
 export { 
   findAllAds,
   findAd,
@@ -94,5 +107,6 @@ export {
   createAd,
   deleteBDDAd,
   updateBDDAd,
-  updateBDDAdGraphQl
+  updateBDDAdGraphQl,
+  listWithFilterModel,
 }; 

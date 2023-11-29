@@ -6,12 +6,24 @@
 
 import { DataSource } from "typeorm";
 
+// export default new DataSource({
+//   type: "sqlite",
+//   database: "the_good_corner.sqlite",
+//   // entities: ["src/entities/*.ts"],
+//   entities: ["src/modules/*/entity.ts"],
+//   synchronize: true,
+//   // logging: ["query","error"],
+//   logging: true,
+// });
+
 export default new DataSource({
-  type: "sqlite",
-  database: "the_good_corner.sqlite",
-  // entities: ["src/entities/*.ts"],
-  entities: ["src/modules/*/entity.ts"],
+  type: "postgres",
+  host: "db",
+  port: 5432,
+  username: "postgres",
+  password: "postgres",
+  database: "thegoodcorner",
   synchronize: true,
-  // logging: ["query","error"],
-  logging: true,
+  logging: ["query", "error"],
+  entities: ["src/modules/*/entity.ts"],
 });

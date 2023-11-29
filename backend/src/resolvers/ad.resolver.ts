@@ -9,11 +9,12 @@ import {
     createAd,
     deleteBDDAd,
     updateBDDAdGraphQl,
+    listWithFilterModel,
   } from "../modules/ads/model";
   import { 
     findCategorie,
   } from "../modules/categories/model";
-  import { Ad, AdDeleted, CreateAdInput, UpdateAdInput } from "../modules/ads/entity";
+  import { Ad, AdDeleted, AdWithFilter, CreateAdInput, FilterAd, UpdateAdInput } from "../modules/ads/entity";
 
   @Resolver()
 export class AdResolver {
@@ -21,6 +22,13 @@ export class AdResolver {
   async listAds (){
     // const ads = await new AdsService().list();
     const ads = await findAllAds();
+    return ads;
+  }
+
+  @Query(() => [AdWithFilter])
+  async listAdsWithFilter(@Arg("filter") filter: FilterAd ) {
+    // const ads = await new AdsService().listWithFilter(filter);
+    const ads = await listWithFilterModel(filter);
     return ads;
   }
 
