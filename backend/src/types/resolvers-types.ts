@@ -26,7 +26,6 @@ export type Ad = {
   owner: Scalars['String']['output'];
   picture: Scalars['String']['output'];
   price: Scalars['Float']['output'];
-  tags: Array<Tag>;
   title: Scalars['String']['output'];
   updatedAt: Scalars['String']['output'];
 };
@@ -60,7 +59,7 @@ export type Category = {
 
 export type CreateAdInput = {
   category: PartialCategoryInput;
-  description?: InputMaybe<Scalars['String']['input']>;
+  description: Scalars['String']['input'];
   location: Scalars['String']['input'];
   owner: Scalars['String']['input'];
   picture: Scalars['String']['input'];
@@ -148,13 +147,6 @@ export type QueryListAdsWithFilterArgs = {
 
 export type QueryListCategoriesArgs = {
   limit?: InputMaybe<Scalars['Float']['input']>;
-};
-
-export type Tag = {
-  __typename?: 'Tag';
-  ads: Array<Ad>;
-  id: Scalars['ID']['output'];
-  name: Scalars['String']['output'];
 };
 
 export type UpdateAdInput = {
@@ -255,7 +247,6 @@ export type ResolversTypes = ResolversObject<{
   PartialCategoryInput: PartialCategoryInput;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-  Tag: ResolverTypeWrapper<Tag>;
   UpdateAdInput: UpdateAdInput;
 }>;
 
@@ -276,7 +267,6 @@ export type ResolversParentTypes = ResolversObject<{
   PartialCategoryInput: PartialCategoryInput;
   Query: {};
   String: Scalars['String']['output'];
-  Tag: Tag;
   UpdateAdInput: UpdateAdInput;
 }>;
 
@@ -289,7 +279,6 @@ export type AdResolvers<ContextType = any, ParentType extends ResolversParentTyp
   owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   picture?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
-  tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -344,13 +333,6 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType, Partial<QueryListCategoriesArgs>>;
 }>;
 
-export type TagResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = ResolversObject<{
-  ads?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
 export type Resolvers<ContextType = any> = ResolversObject<{
   Ad?: AdResolvers<ContextType>;
   AdDeleted?: AdDeletedResolvers<ContextType>;
@@ -359,5 +341,5 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   PartialCategoryForFilter?: PartialCategoryForFilterResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  Tag?: TagResolvers<ContextType>;
 }>;
+

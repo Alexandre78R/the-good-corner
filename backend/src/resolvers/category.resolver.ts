@@ -17,9 +17,9 @@ export default class CategoryResolver {
 
   @Query(() => [Category])
   async listCategories(@Arg("limit", { nullable: true }) limit: number) {
-    console.log(limit)
+    console.log("limit", limit)
     // const categories = await new CategoryService().list();
-    const categories = await findAllCategories(limit);
+    const categories = await findAllCategories(+limit);
     return categories;
   }
 
