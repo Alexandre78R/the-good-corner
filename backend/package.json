@@ -6,12 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "resetDB": "ts-node-dev ./src/config/resetDb.ts",
-    "start": "ts-node-dev --watch ./src src/app.ts",
+    "start": "ts-node-dev --watch ./src ./src/app.ts",
     "generate": "graphql-codegen --watch"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ComicScrip/the-good-corner.git"
+    "url": "git+https://github.com/delbaze/the-good-corner.git"
   },
   "keywords": [
     "ads"
@@ -19,9 +19,9 @@
   "author": "Pierre Genthon",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ComicScrip/the-good-corner/issues"
+    "url": "https://github.com/delbaze/the-good-corner/issues"
   },
-  "homepage": "https://github.com/ComicScrip/the-good-corner#readme",
+  "homepage": "https://github.com/delbaze/the-good-corner#readme",
   "dependencies": {
     "@apollo/server": "^4.9.5",
     "@graphql-tools/load-files": "^7.0.0",
