@@ -23,7 +23,7 @@ export default new DataSource({
   username: "postgres",
   password: "postgres",
   database: "thegoodcorner",
-  synchronize: true,
+  synchronize: true, //en dev, en prod on préfera utiliser les migrations
   logging: ["query", "error"],
   entities: ["src/modules/*/entity.ts"],
 });
