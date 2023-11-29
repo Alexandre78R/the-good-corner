@@ -144,11 +144,6 @@ export type QueryListAdsWithFilterArgs = {
   filter: FilterAd;
 };
 
-
-export type QueryListCategoriesArgs = {
-  limit?: InputMaybe<Scalars['Float']['input']>;
-};
-
 export type UpdateAdInput = {
   category?: InputMaybe<PartialCategoryInput>;
   description?: InputMaybe<Scalars['String']['input']>;
@@ -330,7 +325,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   listAds?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
   listAdsByCategory?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
   listAdsWithFilter?: Resolver<Array<ResolversTypes['AdWithFilter']>, ParentType, ContextType, RequireFields<QueryListAdsWithFilterArgs, 'filter'>>;
-  listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType, Partial<QueryListCategoriesArgs>>;
+  listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{

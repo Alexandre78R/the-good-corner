@@ -2,10 +2,10 @@ import { Category } from "./entity";
 import CategoryService from "./service";
 import { ICreateCategory } from "./types";
 
-const findAllCategories = async () => {
+const findAllCategories = async (limit? : number) => {
   return new Promise<ICreateCategory[]> ( async (resolve, reject) => {
     try {
-      const categories = await new CategoryService().list();
+      const categories = await new CategoryService().list(limit);
       resolve(categories)
     } catch (err) {
       console.error("err", err);
