@@ -18,33 +18,47 @@ export type Scalars = {
 
 export type Ad = {
   __typename?: 'Ad';
-  category?: Maybe<Category>;
-  createdAt?: Maybe<Scalars['String']['output']>;
+  category: Category;
+  createdAt: Scalars['String']['output'];
   description?: Maybe<Scalars['String']['output']>;
-  id?: Maybe<Scalars['ID']['output']>;
-  location?: Maybe<Scalars['String']['output']>;
-  owner?: Maybe<Scalars['String']['output']>;
-  picture?: Maybe<Scalars['String']['output']>;
-  price?: Maybe<Scalars['Float']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
-  updatedAt?: Maybe<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  location: Scalars['String']['output'];
+  owner: Scalars['String']['output'];
+  picture: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
 };
 
-export type Book = {
-  __typename?: 'Book';
-  author?: Maybe<Scalars['String']['output']>;
-  title?: Maybe<Scalars['String']['output']>;
+export type AdDeleted = {
+  __typename?: 'AdDeleted';
+  category: Category;
+  createdAt: Scalars['String']['output'];
+  description?: Maybe<Scalars['String']['output']>;
+  location: Scalars['String']['output'];
+  owner: Scalars['String']['output'];
+  picture: Scalars['String']['output'];
+  price: Scalars['Float']['output'];
+  title: Scalars['String']['output'];
+  updatedAt: Scalars['String']['output'];
+};
+
+export type AdWithFilter = {
+  __typename?: 'AdWithFilter';
+  category: PartialCategoryForFilter;
+  id: Scalars['ID']['output'];
+  title: Scalars['String']['output'];
 };
 
 export type Category = {
   __typename?: 'Category';
-  ads?: Maybe<Array<Maybe<Ad>>>;
-  id?: Maybe<Scalars['ID']['output']>;
-  name?: Maybe<Scalars['String']['output']>;
+  ads: Array<Ad>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type CreateAdInput = {
-  category?: InputMaybe<PartialCategoryInput>;
+  category: PartialCategoryInput;
   description: Scalars['String']['input'];
   location: Scalars['String']['input'];
   owner: Scalars['String']['input'];
@@ -53,47 +67,47 @@ export type CreateAdInput = {
   title: Scalars['String']['input'];
 };
 
-export type CreateBookInput = {
-  author?: InputMaybe<Scalars['String']['input']>;
-  title?: InputMaybe<Scalars['String']['input']>;
-};
-
 export type CreateCategoryInput = {
   name: Scalars['String']['input'];
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  addBook?: Maybe<Array<Maybe<Book>>>;
-  createAd?: Maybe<Ad>;
-  createCategory?: Maybe<Category>;
-  deleteAd?: Maybe<Ad>;
-  updateAd?: Maybe<Ad>;
+export type FilterAd = {
+  categoryId?: InputMaybe<Scalars['ID']['input']>;
+  title: Scalars['String']['input'];
 };
 
-
-export type MutationAddBookArgs = {
-  data?: InputMaybe<CreateBookInput>;
+export type Mutation = {
+  __typename?: 'Mutation';
+  createAd: Ad;
+  createCategory: Category;
+  deleteAd: AdDeleted;
+  updateAd: Ad;
 };
 
 
 export type MutationCreateAdArgs = {
-  data?: InputMaybe<CreateAdInput>;
+  data: CreateAdInput;
 };
 
 
 export type MutationCreateCategoryArgs = {
-  data?: InputMaybe<CreateCategoryInput>;
+  data: CreateCategoryInput;
 };
 
 
 export type MutationDeleteAdArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
 };
 
 
 export type MutationUpdateAdArgs = {
-  data?: InputMaybe<UpdateAdInput>;
+  data: UpdateAdInput;
+};
+
+export type PartialCategoryForFilter = {
+  __typename?: 'PartialCategoryForFilter';
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
 };
 
 export type PartialCategoryInput = {
@@ -102,27 +116,32 @@ export type PartialCategoryInput = {
 
 export type Query = {
   __typename?: 'Query';
-  books?: Maybe<Array<Maybe<Book>>>;
-  findAdById?: Maybe<Ad>;
-  findCategory?: Maybe<Category>;
-  listAds?: Maybe<Array<Maybe<Ad>>>;
-  listAdsByCategory?: Maybe<Array<Maybe<Ad>>>;
-  listCategories?: Maybe<Array<Maybe<Category>>>;
+  findAdById: Ad;
+  findCategory: Category;
+  listAds: Array<Ad>;
+  listAdsByCategory: Array<Ad>;
+  listAdsWithFilter: Array<AdWithFilter>;
+  listCategories: Array<Category>;
 };
 
 
 export type QueryFindAdByIdArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
 };
 
 
 export type QueryFindCategoryArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
 };
 
 
 export type QueryListAdsByCategoryArgs = {
-  id: Scalars['ID']['input'];
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryListAdsWithFilterArgs = {
+  filter: FilterAd;
 };
 
 export type UpdateAdInput = {
@@ -134,12 +153,6 @@ export type UpdateAdInput = {
   picture?: InputMaybe<Scalars['String']['input']>;
   price?: InputMaybe<Scalars['Float']['input']>;
   title?: InputMaybe<Scalars['String']['input']>;
-};
-
-export type User = {
-  __typename?: 'User';
-  id?: Maybe<Scalars['ID']['output']>;
-  username?: Maybe<Scalars['String']['output']>;
 };
 
 export type WithIndex<TObject> = TObject & Record<string, any>;
@@ -215,97 +228,113 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   Ad: ResolverTypeWrapper<Ad>;
-  Book: ResolverTypeWrapper<Book>;
+  AdDeleted: ResolverTypeWrapper<AdDeleted>;
+  AdWithFilter: ResolverTypeWrapper<AdWithFilter>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
   CreateAdInput: CreateAdInput;
-  CreateBookInput: CreateBookInput;
   CreateCategoryInput: CreateCategoryInput;
+  FilterAd: FilterAd;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
+  PartialCategoryForFilter: ResolverTypeWrapper<PartialCategoryForFilter>;
   PartialCategoryInput: PartialCategoryInput;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   UpdateAdInput: UpdateAdInput;
-  User: ResolverTypeWrapper<User>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Ad: Ad;
-  Book: Book;
+  AdDeleted: AdDeleted;
+  AdWithFilter: AdWithFilter;
   Boolean: Scalars['Boolean']['output'];
   Category: Category;
   CreateAdInput: CreateAdInput;
-  CreateBookInput: CreateBookInput;
   CreateCategoryInput: CreateCategoryInput;
+  FilterAd: FilterAd;
   Float: Scalars['Float']['output'];
   ID: Scalars['ID']['output'];
   Mutation: {};
+  PartialCategoryForFilter: PartialCategoryForFilter;
   PartialCategoryInput: PartialCategoryInput;
   Query: {};
   String: Scalars['String']['output'];
   UpdateAdInput: UpdateAdInput;
-  User: User;
 }>;
 
 export type AdResolvers<ContextType = any, ParentType extends ResolversParentTypes['Ad'] = ResolversParentTypes['Ad']> = ResolversObject<{
-  category?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  location?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  owner?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  picture?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  price?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  picture?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type BookResolvers<ContextType = any, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
-  author?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+export type AdDeletedResolvers<ContextType = any, ParentType extends ResolversParentTypes['AdDeleted'] = ResolversParentTypes['AdDeleted']> = ResolversObject<{
+  category?: Resolver<ResolversTypes['Category'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  picture?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AdWithFilterResolvers<ContextType = any, ParentType extends ResolversParentTypes['AdWithFilter'] = ResolversParentTypes['AdWithFilter']> = ResolversObject<{
+  category?: Resolver<ResolversTypes['PartialCategoryForFilter'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CategoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Category'] = ResolversParentTypes['Category']> = ResolversObject<{
-  ads?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ad']>>>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ads?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  addBook?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType, Partial<MutationAddBookArgs>>;
-  createAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, Partial<MutationCreateAdArgs>>;
-  createCategory?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, Partial<MutationCreateCategoryArgs>>;
-  deleteAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<MutationDeleteAdArgs, 'id'>>;
-  updateAd?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, Partial<MutationUpdateAdArgs>>;
+  createAd?: Resolver<ResolversTypes['Ad'], ParentType, ContextType, RequireFields<MutationCreateAdArgs, 'data'>>;
+  createCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<MutationCreateCategoryArgs, 'data'>>;
+  deleteAd?: Resolver<ResolversTypes['AdDeleted'], ParentType, ContextType, RequireFields<MutationDeleteAdArgs, 'id'>>;
+  updateAd?: Resolver<ResolversTypes['Ad'], ParentType, ContextType, RequireFields<MutationUpdateAdArgs, 'data'>>;
+}>;
+
+export type PartialCategoryForFilterResolvers<ContextType = any, ParentType extends ResolversParentTypes['PartialCategoryForFilter'] = ResolversParentTypes['PartialCategoryForFilter']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
-  books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
-  findAdById?: Resolver<Maybe<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<QueryFindAdByIdArgs, 'id'>>;
-  findCategory?: Resolver<Maybe<ResolversTypes['Category']>, ParentType, ContextType, RequireFields<QueryFindCategoryArgs, 'id'>>;
-  listAds?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ad']>>>, ParentType, ContextType>;
-  listAdsByCategory?: Resolver<Maybe<Array<Maybe<ResolversTypes['Ad']>>>, ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
-  listCategories?: Resolver<Maybe<Array<Maybe<ResolversTypes['Category']>>>, ParentType, ContextType>;
-}>;
-
-export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  username?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  findAdById?: Resolver<ResolversTypes['Ad'], ParentType, ContextType, RequireFields<QueryFindAdByIdArgs, 'id'>>;
+  findCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryFindCategoryArgs, 'id'>>;
+  listAds?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
+  listAdsByCategory?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
+  listAdsWithFilter?: Resolver<Array<ResolversTypes['AdWithFilter']>, ParentType, ContextType, RequireFields<QueryListAdsWithFilterArgs, 'filter'>>;
+  listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = any> = ResolversObject<{
   Ad?: AdResolvers<ContextType>;
-  Book?: BookResolvers<ContextType>;
+  AdDeleted?: AdDeletedResolvers<ContextType>;
+  AdWithFilter?: AdWithFilterResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
+  PartialCategoryForFilter?: PartialCategoryForFilterResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
-  User?: UserResolvers<ContextType>;
 }>;
 
