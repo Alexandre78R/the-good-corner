@@ -24,7 +24,7 @@ CREATE TABLE ad
 	REFERENCES category(id)
 );
 
-INSERT INTO category (name) VALUES ('vêtements'), ('voiture'), ('autres'), ('informatique');
+INSERT INTO category (name) VALUES ('vêtements'), ('voiture'), ('autres'), ('informatique'), ('tv'), ('téléphone'), ('carte'), ('SW');
 
 INSERT INTO ad (title, description, owner, price, location, picture, createdAt, categoryId) VALUES 
 ('Vieux jeans troués', 'Jeans d occasion en bon état, quelques trous.', 'Nick', 200, 'Bordeaux', 'https://media.istockphoto.com/id/1201412474/fr/photo/trous-dans-un-vieux-jean-bleu-d%C3%A9chir%C3%A9-manque-dargent-pour-acheter-de-nouveaux-v%C3%AAtements-mise.jpg?s=612x612&w=0&k=20&c=O0mhDSlhRzKiqlD8DxpAg7Nr5Pc30P3J3U1ATuWLuVc=', '2023-09-01', 1),
