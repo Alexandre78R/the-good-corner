@@ -10,6 +10,7 @@ import {
     deleteBDDAd,
     updateBDDAdGraphQl,
     listWithFilterModel,
+    listRandom,
   } from "../modules/ads/model";
   import { 
     findCategorie,
@@ -41,6 +42,12 @@ export class AdResolver {
     }
     // const ads = await new AdsService().listByCategory(+id);
     const ads = await findAdCategory(+id);
+    return ads;
+  }
+
+  @Query(() => [Ad])
+  async listAdsRandom() {
+    const ads = await listRandom();
     return ads;
   }
   

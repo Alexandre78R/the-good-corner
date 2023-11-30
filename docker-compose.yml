@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: thegoodcorner
     ports:
-      - 5433:5432
+      - 5432:5432
     volumes:
       - thegoodcorner-data:/var/lib/postgresql/data
   adminer:

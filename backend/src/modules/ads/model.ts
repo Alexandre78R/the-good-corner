@@ -100,6 +100,18 @@ const listWithFilterModel = async (filter: any) => {
   });
 };
 
+const listRandom = async () => {
+  return new Promise<Ad[]>(async (resolve, reject) => {
+    try {
+      const adToUpdate = await new AdsService().listRandom();
+      resolve(adToUpdate)
+    } catch (err) {
+      console.log(err);
+      reject(err)
+    }
+  });
+};
+
 export { 
   findAllAds,
   findAd,
@@ -109,4 +121,5 @@ export {
   updateBDDAd,
   updateBDDAdGraphQl,
   listWithFilterModel,
+  listRandom,
 }; 
