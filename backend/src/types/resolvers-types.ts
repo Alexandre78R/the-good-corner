@@ -120,6 +120,7 @@ export type Query = {
   findCategory: Category;
   listAds: Array<Ad>;
   listAdsByCategory: Array<Ad>;
+  listAdsRandom: Array<Ad>;
   listAdsWithFilter: Array<AdWithFilter>;
   listCategories: Array<Category>;
 };
@@ -329,6 +330,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryFindCategoryArgs, 'id'>>;
   listAds?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
   listAdsByCategory?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
+  listAdsRandom?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
   listAdsWithFilter?: Resolver<Array<ResolversTypes['AdWithFilter']>, ParentType, ContextType, RequireFields<QueryListAdsWithFilterArgs, 'filter'>>;
   listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType, Partial<QueryListCategoriesArgs>>;
 }>;

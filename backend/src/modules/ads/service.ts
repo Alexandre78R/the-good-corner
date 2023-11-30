@@ -35,24 +35,52 @@ export default class AdsService {
   //   console.log("RESULT", result);
   //   return result;
   // }
+  // async listWithFilter({ title, categoryId }: FilterAd) {
+  //   return await this.db.find({
+  //     relations: {
+  //       category: true,
+  //     },
+  //     select: {
+  //       id: true,
+  //       title: true,
+  //       category: {
+  //         id: true,
+  //         name: true,
+  //       },
+  //     },
+  //     where: {
+  //       title: title ? Like(`%${title}%`) : undefined,
+  //       category: { id: categoryId ? +categoryId : undefined },
+  //     },
+  //   });
+  // }
+
   async listWithFilter({ title, categoryId }: FilterAd) {
-    return await this.db.find({
-      relations: {
-        category: true,
-      },
-      select: {
-        id: true,
-        title: true,
-        category: {
-          id: true,
-          name: true,
-        },
-      },
-      where: {
-        title: title ? Like(`%${title}%`) : undefined,
-        category: { id: categoryId ? +categoryId : undefined },
-      },
-    });
+    return await this.db
+      .createQueryBuilder("a")
+      .select(["a.id", "a.title"])
+      .leftJoinAndSelect("a.category", "category")
+      .where("LOWER(a.title) LIKE :title", {
+        title: `%${title.toLowerCase()}%`,
+      })
+      .getMany();
+    // return await this.db.find({
+    //   relations: {
+    //     category: true,
+    //   },
+    //   select: {
+    //     id: true,
+    //     title: true,
+    //     category: {
+    //       id: true,
+    //       name: true,
+    //     },
+    //   },
+    //   where: [
+    //     {title: title ? Like(`%${title}%`) : undefined},
+    //     // {category: { id: categoryId ? +categoryId : undefined }},
+    //   ],
+    // });
   }
 
   async list(tagIds?: string) {
@@ -72,6 +100,14 @@ export default class AdsService {
     });
   }
 
+  async listRandom() {
+    return await this.db
+      .createQueryBuilder("a")
+      .orderBy("RANDOM()")
+      .limit(5)
+      .getMany();
+  }
+  
   async listByCategory(id: number) {
     return await this.db.find({
       where: { category: { id } },
