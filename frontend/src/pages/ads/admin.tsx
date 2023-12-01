@@ -2,7 +2,10 @@ import Link from "next/link";
 import styles from "@/styles/pages/ads/Form.module.css";
 import { formatAmount } from "@/lib/utilities";
 import { useEffect, useState } from "react";
-import { useListAdsByCategoryLazyQuery, useListCategoriesQuery } from "@/types/graphql";
+import {
+  useListAdsByCategoryLazyQuery,
+  useListCategoriesQuery,
+} from "@/types/graphql";
 
 function AdminAds() {
   const { data } = useListCategoriesQuery({
@@ -12,13 +15,15 @@ function AdminAds() {
       }
     },
   });
-  const [getAdsByCategory, {data: dataAds}] = useListAdsByCategoryLazyQuery()
+  const [getAdsByCategory, { data: dataAds }] = useListAdsByCategoryLazyQuery({
+    fetchPolicy: "no-cache",
+  });
   const [filter, setFilter] = useState<number>();
 
   useEffect(() => {
     if (filter) {
       // getAdsByCategory({variables: {listAdsByCategoryId: filter.toString()}})
-      getAdsByCategory({variables: {listAdsByCategoryId: `${filter}`}})
+      getAdsByCategory({ variables: { listAdsByCategoryId: `${filter}` } });
     }
   }, [filter]);
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -47,7 +52,7 @@ function AdminAds() {
       </div>
       <div>
         Liste des annonces:
-        {dataAds?.listAdsByCategory.length ? (
+        {dataAds?.listAdsByCategory.ads.length ? (
           <table>
             <thead>
               <tr>
@@ -57,7 +62,7 @@ function AdminAds() {
               </tr>
             </thead>
             <tbody>
-              {dataAds?.listAdsByCategory.map((ad) => (
+              {dataAds?.listAdsByCategory.ads.map((ad) => (
                 <tr key={ad.id}>
                   <td>{ad.title}</td>
                   <td>{formatAmount(ad.price)}</td>

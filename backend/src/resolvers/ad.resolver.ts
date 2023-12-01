@@ -15,7 +15,7 @@ import {
   import { 
     findCategorie,
   } from "../modules/categories/model";
-  import { Ad, AdDeleted, AdWithFilter, CreateAdInput, FilterAd, UpdateAdInput } from "../modules/ads/entity";
+  import { Ad, AdDeleted, AdWithCount, AdWithFilter, CreateAdInput, FilterAd, UpdateAdInput } from "../modules/ads/entity";
 
   @Resolver()
 export class AdResolver {
@@ -33,7 +33,7 @@ export class AdResolver {
     return ads;
   }
 
-  @Query(() => [Ad])
+  @Query(() => AdWithCount)
   async listAdsByCategory(@Arg("id") id: string) {
     // const category = await new CategoryService().find(+id);
     const category = await findCategorie(+id);

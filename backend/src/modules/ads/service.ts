@@ -108,11 +108,21 @@ export default class AdsService {
       .getMany();
   }
   
+  // async listByCategory(id: number) {
+  //   return await this.db.find({
+  //     where: { category: { id } },
+  //     order: { createdAt: "DESC" },
+  //   });
+  // }
   async listByCategory(id: number) {
-    return await this.db.find({
+    const [ads, count] = await this.db.findAndCount({
       where: { category: { id } },
       order: { createdAt: "DESC" },
+      take: 5
     });
+    // console.log("console - LISTBYCATEGORY", count)
+
+    return { ads, count };
   }
 
   async find(id: number) {

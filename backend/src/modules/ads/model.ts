@@ -30,6 +30,7 @@ const findAdCategory = async (id : number) => {
   return new Promise<any> ( async (resolve, reject) => {
     try {
       const ads = await new AdsService().listByCategory(id);
+      // console.log("model" , ads)
       resolve(ads)
     } catch (err) {
       console.error("err", err);
@@ -111,6 +112,7 @@ const listRandom = async () => {
     }
   });
 };
+
 
 export { 
   findAllAds,

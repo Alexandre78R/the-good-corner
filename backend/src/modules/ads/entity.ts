@@ -123,6 +123,15 @@ export class AdWithFilter {
   @Field(() => PartialCategoryForFilter)
   category: PartialCategoryForFilter;
 }
+
+@ObjectType()
+export class AdWithCount {
+  @Field(() => [Ad])
+  ads: [Ad];
+
+  @Field()
+  count: number;
+}
 //INPUTS
 
 @InputType()

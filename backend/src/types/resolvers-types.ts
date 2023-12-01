@@ -43,6 +43,12 @@ export type AdDeleted = {
   updatedAt: Scalars['String']['output'];
 };
 
+export type AdWithCount = {
+  __typename?: 'AdWithCount';
+  ads: Array<Ad>;
+  count: Scalars['Float']['output'];
+};
+
 export type AdWithFilter = {
   __typename?: 'AdWithFilter';
   category: PartialCategoryForFilter;
@@ -119,7 +125,7 @@ export type Query = {
   findAdById: Ad;
   findCategory: Category;
   listAds: Array<Ad>;
-  listAdsByCategory: Array<Ad>;
+  listAdsByCategory: AdWithCount;
   listAdsRandom: Array<Ad>;
   listAdsWithFilter: Array<AdWithFilter>;
   listCategories: Array<Category>;
@@ -235,6 +241,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Ad: ResolverTypeWrapper<Ad>;
   AdDeleted: ResolverTypeWrapper<AdDeleted>;
+  AdWithCount: ResolverTypeWrapper<AdWithCount>;
   AdWithFilter: ResolverTypeWrapper<AdWithFilter>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Category: ResolverTypeWrapper<Category>;
@@ -255,6 +262,7 @@ export type ResolversTypes = ResolversObject<{
 export type ResolversParentTypes = ResolversObject<{
   Ad: Ad;
   AdDeleted: AdDeleted;
+  AdWithCount: AdWithCount;
   AdWithFilter: AdWithFilter;
   Boolean: Scalars['Boolean']['output'];
   Category: Category;
@@ -298,6 +306,12 @@ export type AdDeletedResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type AdWithCountResolvers<ContextType = any, ParentType extends ResolversParentTypes['AdWithCount'] = ResolversParentTypes['AdWithCount']> = ResolversObject<{
+  ads?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type AdWithFilterResolvers<ContextType = any, ParentType extends ResolversParentTypes['AdWithFilter'] = ResolversParentTypes['AdWithFilter']> = ResolversObject<{
   category?: Resolver<ResolversTypes['PartialCategoryForFilter'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -329,7 +343,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findAdById?: Resolver<ResolversTypes['Ad'], ParentType, ContextType, RequireFields<QueryFindAdByIdArgs, 'id'>>;
   findCategory?: Resolver<ResolversTypes['Category'], ParentType, ContextType, RequireFields<QueryFindCategoryArgs, 'id'>>;
   listAds?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
-  listAdsByCategory?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
+  listAdsByCategory?: Resolver<ResolversTypes['AdWithCount'], ParentType, ContextType, RequireFields<QueryListAdsByCategoryArgs, 'id'>>;
   listAdsRandom?: Resolver<Array<ResolversTypes['Ad']>, ParentType, ContextType>;
   listAdsWithFilter?: Resolver<Array<ResolversTypes['AdWithFilter']>, ParentType, ContextType, RequireFields<QueryListAdsWithFilterArgs, 'filter'>>;
   listCategories?: Resolver<Array<ResolversTypes['Category']>, ParentType, ContextType, Partial<QueryListCategoriesArgs>>;
@@ -338,6 +352,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 export type Resolvers<ContextType = any> = ResolversObject<{
   Ad?: AdResolvers<ContextType>;
   AdDeleted?: AdDeletedResolvers<ContextType>;
+  AdWithCount?: AdWithCountResolvers<ContextType>;
   AdWithFilter?: AdWithFilterResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
