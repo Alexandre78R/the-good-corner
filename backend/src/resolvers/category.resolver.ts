@@ -16,10 +16,10 @@ import { Category, CreateCategoryInput } from "../modules/categories/entity"
 export default class CategoryResolver {
 
   @Query(() => [Category])
-  async listCategories(@Arg("limit", { nullable: true }) limit: number) {
-    console.log("limit", limit)
+  async listCategories(@Arg("limit", { nullable: true }) limit?: number) {
+    // console.log("limit", limit)
     // const categories = await new CategoryService().list();
-    const categories = await findAllCategories(+limit);
+    const categories = await findAllCategories(limit);
     return categories;
   }
 
